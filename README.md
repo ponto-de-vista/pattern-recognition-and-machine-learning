@@ -1,1 +1,1 @@
-# pattern-recognition-and-machine-learning-
+# pattern-recognition-and-machine-learning
