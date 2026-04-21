@@ -3,6 +3,6 @@
 
 ## Install dependencies
 
-```´python
+```python
 pip install -r requirements.txt
 ```
