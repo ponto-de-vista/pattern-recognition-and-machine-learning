@@ -72,29 +72,32 @@ def create_unified_database(db_path='pattern_recognition.duckdb'):
         print(f"  Processed PIB: {f}")
 
     print("\n--- Importing Total Crime Counts (Aggregated) ---")
-    for i, f in enumerate(glob.glob('./criminal-datasets/*_clean.csv')):
-        if i == 0:
-            con.execute("DROP TABLE IF EXISTS crimes")
-            insert_mode = "CREATE TABLE crimes AS"
-        else:
-            insert_mode = "INSERT INTO crimes"
-        
-        con.execute(f"""
-            {insert_mode}
-            SELECT year, month, city, COUNT(*) as total_crimes
-            FROM (
-                SELECT 
-                    ANO_ESTATISTICA::INT AS year,
-                    MES_ESTATISTICA::INT AS month,
-                    UPPER(COALESCE(CIDADE, NOME_MUNICIPIO)) AS city
-                FROM read_csv('{f}', delim=',', quote='\"', encoding='utf-8', header=true, ignore_errors=true)
-            )
-            GROUP BY year, month, city
-        """)
-        print(f"  Processed Crimes: {f}")
+    con.execute("DROP TABLE IF EXISTS crimes")
+    
+    # Notice we pass the wildcard '*' directly into read_csv
+    # and added union_by_name=true at the end!
+    con.execute("""
+        CREATE TABLE crimes AS
+        SELECT year, month, city, COUNT(*) as total_crimes
+        FROM (
+            SELECT 
+                ANO_ESTATISTICA::INT AS year,
+                MES_ESTATISTICA::INT AS month,
+                UPPER(COALESCE(CIDADE, NOME_MUNICIPIO)) AS city
+            FROM read_csv('./criminal-datasets/*_clean.csv', 
+                          delim=',', 
+                          quote='\"', 
+                          encoding='utf-8', 
+                          header=true, 
+                          ignore_errors=true,
+                          union_by_name=true)
+        )
+        GROUP BY year, month, city
+    """)
+    print("  Processed ALL Crime files successfully in one go!")
 
     con.close()
-    print("\n✅ Database ready for Global Trend Analysis!")
+    print("\n Database ready!")
 
 if __name__ == "__main__":
     create_unified_database()
