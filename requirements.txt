@@ -3,3 +3,7 @@ pandas
 dask[complete]
 numpy
 matplotlib
+sympy
+scipy
+scikit-learn
+openpyxl
