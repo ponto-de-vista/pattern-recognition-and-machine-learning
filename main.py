@@ -45,6 +45,8 @@ def process_criminal_data(file_path, output_enc='utf-8-sig'):
 
 def create_unified_database(db_path='pattern_recognition.duckdb'):
     con = duckdb.connect(db_path)
+    con.execute("SET memory_limit = '16GB'")
+    con.execute("SET threads = 16")
 
     print("--- Importing Total Expenses (PIB) ---")
     for i, f in enumerate(glob.glob('./pib-datasets/*.csv')):
