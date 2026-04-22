@@ -7,6 +7,7 @@ import pandas as pd
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 def process_criminal_data(file_path, output_enc='utf-8-sig'):
+    
     try:
         logging.info(f"Analyzing workbook: {file_path}")
         
@@ -42,36 +43,56 @@ def process_criminal_data(file_path, output_enc='utf-8-sig'):
     except Exception as e:
         logging.error(f"Failed to process {file_path}: {e}")
 
+def create_unified_database(db_path='pattern_recognition.duckdb'):
+    con = duckdb.connect(db_path)
+
+    print("--- Importing Total Expenses (PIB) ---")
+    for i, f in enumerate(glob.glob('./pib-datasets/*.csv')):
+        if i == 0:
+            con.execute("DROP TABLE IF EXISTS expenses")
+            insert_mode = "CREATE TABLE expenses AS"
+        else:
+            insert_mode = "INSERT INTO expenses"
+        
+        con.execute(f"""
+            {insert_mode}
+            SELECT year, month, city, SUM(value) as total_value
+            FROM (
+                SELECT 
+                    ano_exercicio::INT AS year,
+                    mes_referencia::INT AS month,
+                    UPPER(ds_municipio) AS city,
+                    REPLACE(vl_despesa, ',', '.')::DOUBLE AS value
+                FROM read_csv('{f}', delim=';', encoding='iso-8859_1-1998', header=true, ignore_errors=true)
+            )
+            GROUP BY year, month, city
+        """)
+        print(f"  Processed PIB: {f}")
+
+    print("\n--- Importing Total Crime Counts (Aggregated) ---")
+    for i, f in enumerate(glob.glob('./criminal-datasets/*_clean.csv')):
+        if i == 0:
+            con.execute("DROP TABLE IF EXISTS crimes")
+            insert_mode = "CREATE TABLE crimes AS"
+        else:
+            insert_mode = "INSERT INTO crimes"
+        
+        con.execute(f"""
+            {insert_mode}
+            SELECT year, month, city, COUNT(*) as total_crimes
+            FROM (
+                SELECT 
+                    ANO_ESTATISTICA::INT AS year,
+                    MES_ESTATISTICA::INT AS month,
+                    UPPER(COALESCE(CIDADE, NOME_MUNICIPIO)) AS city
+                FROM read_csv('{f}', delim=',', quote='\"', encoding='utf-8', header=true, ignore_errors=true)
+            )
+            GROUP BY year, month, city
+        """)
+        print(f"  Processed Crimes: {f}")
+
+    con.close()
+    print("\n✅ Database ready for Global Trend Analysis!")
+
 if __name__ == "__main__":
-
-    """
-    target_files = glob.glob('./criminal-datasets/*.xlsx')
-    for f in target_files:
-        process_criminal_data(f)
-    """
-
-    # pib dataset uses ;
-    for f in glob.glob('./pib-datasets/*.csv'):
-        query = f"SELECT * FROM read_csv('{f}', delim=';', encoding='latin-1') LIMIT 0"
-        print(f, "\n", duckdb.query(query).df().columns.tolist(), "\n")
-
-    """
-        ano_exercicio;
-        mes_referencia;
-        ds_municipio;
-        vl_despesa;
-    """
-
-    # criminal dataset uses ,
-    for f in glob.glob('./criminal-datasets/*.csv'):
-        # We use quote='"' because your columns are wrapped in double quotes
-        # We ensure delim=',' because Python's to_csv defaults to comma
-        query = f"SELECT * FROM read_csv('{f}', delim=',', quote='\"', encoding='utf-8') LIMIT 0"
-        print(f, "\n", duckdb.query(query).df().columns.tolist(), "\n")
-
-    """
-        ANO_ESTATISTICA;
-        MES_ESTATISTICA;
-        CIDADE or NOME_MUNICIPIO;
-        NATUREZA_APURADA;
-    """
+    create_unified_database()
