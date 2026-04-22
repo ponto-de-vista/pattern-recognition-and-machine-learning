@@ -2,3 +2,4 @@
 /pib-datasets/
 /criminal-datasets/
 *.duckdb
+.venv/
