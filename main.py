@@ -74,8 +74,6 @@ def create_unified_database(db_path='pattern_recognition.duckdb'):
     print("\n--- Importing Total Crime Counts (Aggregated) ---")
     con.execute("DROP TABLE IF EXISTS crimes")
     
-    # Notice we pass the wildcard '*' directly into read_csv
-    # and added union_by_name=true at the end!
     con.execute("""
         CREATE TABLE crimes AS
         SELECT year, month, city, COUNT(*) as total_crimes
@@ -94,10 +92,38 @@ def create_unified_database(db_path='pattern_recognition.duckdb'):
         )
         GROUP BY year, month, city
     """)
-    print("  Processed ALL Crime files successfully in one go!")
 
     con.close()
     print("\n Database ready!")
 
 if __name__ == "__main__":
-    create_unified_database()
+    #create_unified_database()
+
+    query = """
+        SELECT DISTINCT "COD IBGE"
+        FROM read_csv('./criminal-datasets/*2025_clean.csv', 
+            delim=',', 
+            quote='\"', 
+            encoding='utf-8', 
+            header=true, 
+            ignore_errors=true,
+            union_by_name=true)
+    """
+    data = duckdb.query(query)
+    print(data)
+
+    print("Despesas 2023")
+
+    df = pd.read_csv("./pib-datasets/despesas-2023.csv", nrows=0, encoding="latin-1")
+    print(df.columns.tolist())
+
+    print("Dadaos Criminais 2023")
+
+    df = pd.read_csv("./criminal-datasets/SPDadosCriminais_2023_clean.csv", nrows=0, encoding="utf-8")
+    print(df.columns.tolist())
+
+    #codigo_municipio_ibge
+    #tp_identificador_despesa
+    #vl_despesa
+    #coluna porcentagem gasto para segurança publica
+    # 

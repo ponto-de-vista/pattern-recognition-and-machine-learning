@@ -1,0 +1,648 @@
+cod_ibge;municipio;area_km;cod_ra;ra;cod_rm;rm;cod_drs;drs;cod_r_saude;r_saude
+35;Estado de São Paulo;248219,48;;Estado de São Paulo;;Estado de São Paulo;;Estado de São Paulo;;Estado de São Paulo
+3500000;Sem especificação de município;;;Sem especificação de município;;Sem especificação de município;;Sem especificação de município;;Sem especificação de município
+3500105;Adamantina;411,987;11;RA Presidente Prudente;9;Demais municípios;5;DRS Marília;35091;Adamantina
+3500204;Adolfo;211,055;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35156;José Bonifácio
+3500303;Aguaí;474,554;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35142;Mantiqueira
+3500402;Águas da Prata;142,673;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35142;Mantiqueira
+3500501;Águas de Lindóia;60,126;6;RA Campinas;9;Demais municípios;3;DRS Campinas;35074;Circuito das Águas
+3500550;Águas de Santa Bárbara;404,463;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3500600;Águas de São Pedro;3,612;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35103;Piracicaba
+3500709;Agudos;966,708;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3500758;Alambari;159,6;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35161;Itapetininga
+3500808;Alfredo Marcondes;118,915;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3500907;Altair;313,007;14;RA Barretos;9;Demais municípios;16;DRS Barretos;35051;Norte - Barretos
+3501004;Altinópolis;928,956;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35133;Vale das Cachoeiras
+3501103;Alto Alegre;318,574;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3501152;Alumínio;83,619;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3501202;Álvares Florence;362,411;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35157;Votuporanga
+3501301;Álvares Machado;347,647;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3501400;Álvaro de Carvalho;153,662;12;RA Marília;9;Demais municípios;5;DRS Marília;35093;Marília
+3501509;Alvinlândia;84,879;12;RA Marília;9;Demais municípios;5;DRS Marília;35093;Marília
+3501608;Americana;133,912;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3501707;Américo Brasiliense;122,958;13;RA Central;9;Demais municípios;8;DRS Araraquara;35031;Central do DRS III
+3501806;Américo de Campos;252,876;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35157;Votuporanga
+3501905;Amparo;445,323;6;RA Campinas;9;Demais municípios;3;DRS Campinas;35074;Circuito das Águas
+3502002;Analândia;325,953;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35104;Rio Claro
+3502101;Andradina;964,226;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35022;Lagos do DRS II
+3502200;Angatuba;1027,288;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35161;Itapetininga
+3502309;Anhembi;736,557;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35063;Polo Cuesta
+3502408;Anhumas;320,84;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3502507;Aparecida;120,89;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3502606;Aparecida d'Oeste;179,004;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35153;Jales
+3502705;Apiaí;974,322;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35162;Itapeva
+3502754;Araçariguama;145,204;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3502804;Araçatuba;1167,126;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35021;Central do DRS II
+3502903;Araçoiaba da Serra;255,305;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3503000;Aramina;202,829;15;RA Franca;9;Demais municípios;4;DRS Franca;35083;Alta Mogiana
+3503109;Arandu;285,908;16;RA Itapeva;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3503158;Arapeí;156,903;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3503208;Araraquara;1003,625;13;RA Central;9;Demais municípios;8;DRS Araraquara;35031;Central do DRS III
+3503307;Araras;644,831;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35101;Araras
+3503356;Arco-Íris;264,904;12;RA Marília;9;Demais municípios;5;DRS Marília;35095;Tupã
+3503406;Arealva;506,226;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3503505;Areias;305,227;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3503604;Areiópolis;85,907;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35063;Polo Cuesta
+3503703;Ariranha;132,624;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35151;Catanduva
+3503802;Artur Nogueira;178,026;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3503901;Arujá;96,167;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35011;Alto do Tietê
+3503950;Aspásia;69,373;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35153;Jales
+3504008;Assis;460,609;12;RA Marília;9;Demais municípios;5;DRS Marília;35092;Assis
+3504107;Atibaia;478,521;6;RA Campinas;9;Demais municípios;3;DRS Campinas;35071;Bragança
+3504206;Auriflama;434,498;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35021;Central do DRS II
+3504305;Avaí;540,689;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3504404;Avanhandava;338,37;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3504503;Avaré;1213,055;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3504602;Bady Bassitt;110,372;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3504701;Balbinos;91,635;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3504800;Bálsamo;149,881;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3504909;Bananal;616,429;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3505005;Barão de Antonina;153,142;16;RA Itapeva;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3505104;Barbosa;205,212;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3505203;Bariri;444,405;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35064;Jaú
+3505302;Barra Bonita;150,121;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35064;Jaú
+3505351;Barra do Chapéu;405,681;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35162;Itapeva
+3505401;Barra do Turvo;1007,684;2;RA Registro;9;Demais municípios;9;DRS Registro;35121;Vale do Ribeira
+3505500;Barretos;1566,161;14;RA Barretos;9;Demais municípios;16;DRS Barretos;35051;Norte - Barretos
+3505609;Barrinha;146,025;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35131;Horizonte Verde
+3505708;Barueri;65,701;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35014;Rota dos Bandeirantes
+3505807;Bastos;170,912;12;RA Marília;9;Demais municípios;5;DRS Marília;35095;Tupã
+3505906;Batatais;849,526;15;RA Franca;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35133;Vale das Cachoeiras
+3506003;Bauru;667,684;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3506102;Bebedouro;683,192;14;RA Barretos;9;Demais municípios;16;DRS Barretos;35052;Sul - Barretos
+3506201;Bento de Abreu;301,687;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35021;Central do DRS II
+3506300;Bernardino de Campos;244,158;12;RA Marília;9;Demais municípios;5;DRS Marília;35094;Ourinhos
+3506359;Bertioga;491,546;3;RA Santos;2;RM Baixada Santista;13;DRS Baixada Santista;35041;Baixada Santista
+3506409;Bilac;158,025;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35021;Central do DRS II
+3506508;Birigui;530,031;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3506607;Biritiba Mirim;317,406;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35011;Alto do Tietê
+3506706;Boa Esperança do Sul;690,748;13;RA Central;9;Demais municípios;8;DRS Araraquara;35031;Central do DRS III
+3506805;Bocaina;363,926;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35064;Jaú
+3506904;Bofete;653,541;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35063;Polo Cuesta
+3507001;Boituva;248,954;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3507100;Bom Jesus dos Perdões;108,366;6;RA Campinas;9;Demais municípios;3;DRS Campinas;35071;Bragança
+3507159;Bom Sucesso de Itararé;133,578;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35162;Itapeva
+3507209;Borá;118,951;12;RA Marília;9;Demais municípios;5;DRS Marília;35092;Assis
+3507308;Boracéia;122,11;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35064;Jaú
+3507407;Borborema;552,256;13;RA Central;9;Demais municípios;8;DRS Araraquara;35032;Centro Oeste do DRS III
+3507456;Borebi;347,989;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3507506;Botucatu;1482,642;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35063;Polo Cuesta
+3507605;Bragança Paulista;512,584;6;RA Campinas;9;Demais municípios;3;DRS Campinas;35071;Bragança
+3507704;Braúna;195,176;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3507753;Brejo Alegre;105,689;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3507803;Brodowski;278,458;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35133;Vale das Cachoeiras
+3507902;Brotas;1101,373;6;RA Campinas;9;Demais municípios;12;DRS Bauru;35064;Jaú
+3508009;Buri;1196,463;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35162;Itapeva
+3508108;Buritama;326,921;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3508207;Buritizal;266,42;15;RA Franca;9;Demais municípios;4;DRS Franca;35083;Alta Mogiana
+3508306;Cabrália Paulista;239,974;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3508405;Cabreúva;260,234;6;RA Campinas;9;RM Jundiaí;3;DRS Campinas;35073;Jundiaí
+3508504;Caçapava;368,99;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35171;Alto Vale do Paraíba
+3508603;Cachoeira Paulista;287,99;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3508702;Caconde;468,214;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35143;Rio Pardo
+3508801;Cafelândia;920,28;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35065;Lins
+3508900;Caiabu;253,352;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3509007;Caieiras;97,642;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35012;Franco da Rocha
+3509106;Caiuá;551,159;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35114;Extremo Oeste Paulista
+3509205;Cajamar;131,386;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35012;Franco da Rocha
+3509254;Cajati;454,489;2;RA Registro;9;Demais municípios;9;DRS Registro;35121;Vale do Ribeira
+3509304;Cajobi;176,929;14;RA Barretos;9;Demais municípios;16;DRS Barretos;35051;Norte - Barretos
+3509403;Cajuru;660,088;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35133;Vale das Cachoeiras
+3509452;Campina do Monte Alegre;184,479;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35161;Itapetininga
+3509502;Campinas;794,571;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3509601;Campo Limpo Paulista;79,403;6;RA Campinas;9;RM Jundiaí;3;DRS Campinas;35073;Jundiaí
+3509700;Campos do Jordão;289,981;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35174;Vale do Paraíba/Região Serrana
+3509809;Campos Novos Paulista;484,199;12;RA Marília;9;Demais municípios;5;DRS Marília;35093;Marília
+3509908;Cananéia;1237,354;2;RA Registro;9;Demais municípios;9;DRS Registro;35121;Vale do Ribeira
+3509957;Canas;53,261;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3510005;Cândido Mota;595,811;12;RA Marília;9;Demais municípios;5;DRS Marília;35092;Assis
+3510104;Cândido Rodrigues;70,892;13;RA Central;9;Demais municípios;8;DRS Araraquara;35033;Norte do DRS III
+3510153;Canitar;57,459;12;RA Marília;9;Demais municípios;5;DRS Marília;35094;Ourinhos
+3510203;Capão Bonito;1640,229;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35161;Itapetininga
+3510302;Capela do Alto;169,89;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3510401;Capivari;322,878;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35103;Piracicaba
+3510500;Caraguatatuba;484,947;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35173;Litoral Norte
+3510609;Carapicuíba;34,546;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35014;Rota dos Bandeirantes
+3510708;Cardoso;639,248;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35157;Votuporanga
+3510807;Casa Branca;864,225;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35143;Rio Pardo
+3510906;Cássia dos Coqueiros;191,683;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35133;Vale das Cachoeiras
+3511003;Castilho;1065,318;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35022;Lagos do DRS II
+3511102;Catanduva;290,596;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35151;Catanduva
+3511201;Catiguá;148,393;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35151;Catanduva
+3511300;Cedral;197,838;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3511409;Cerqueira César;511,621;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3511508;Cerquilho;127,803;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35161;Itapetininga
+3511607;Cesário Lange;190,392;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35161;Itapetininga
+3511706;Charqueada;175,846;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35103;Piracicaba
+3511904;Clementina;168,59;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3512001;Colina;422,303;14;RA Barretos;9;Demais municípios;16;DRS Barretos;35051;Norte - Barretos
+3512100;Colômbia;728,648;14;RA Barretos;9;Demais municípios;16;DRS Barretos;35051;Norte - Barretos
+3512209;Conchal;182,793;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35101;Araras
+3512308;Conchas;466,12;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35063;Polo Cuesta
+3512407;Cordeirópolis;137,579;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35102;Limeira
+3512506;Coroados;246,825;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3512605;Coronel Macedo;303,83;16;RA Itapeva;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3512704;Corumbataí;278,622;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35104;Rio Claro
+3512803;Cosmópolis;154,665;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3512902;Cosmorama;441,68;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35157;Votuporanga
+3513009;Cotia;323,994;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35013;Mananciais
+3513108;Cravinhos;311,423;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35132;Aquífero Guarani
+3513207;Cristais Paulista;385,23;15;RA Franca;9;Demais municípios;4;DRS Franca;35081;Três Colinas
+3513306;Cruzália;149,33;12;RA Marília;9;Demais municípios;5;DRS Marília;35092;Assis
+3513405;Cruzeiro;305,699;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3513504;Cubatão;142,879;3;RA Santos;2;RM Baixada Santista;13;DRS Baixada Santista;35041;Baixada Santista
+3513603;Cunha;1407,25;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3513702;Descalvado;753,706;13;RA Central;9;Demais municípios;8;DRS Araraquara;35034;Coração do DRS III
+3513801;Diadema;30,732;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35015;Grande ABC
+3513850;Dirce Reis;88,133;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35153;Jales
+3513900;Divinolândia;223,749;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35143;Rio Pardo
+3514007;Dobrada;149,729;13;RA Central;9;Demais municípios;8;DRS Araraquara;35033;Norte do DRS III
+3514106;Dois Córregos;632,972;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35064;Jaú
+3514205;Dolcinópolis;77,939;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35153;Jales
+3514304;Dourado;205,874;13;RA Central;9;Demais municípios;8;DRS Araraquara;35034;Coração do DRS III
+3514403;Dracena;487,688;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35111;Alta Paulista
+3514502;Duartina;264,557;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3514601;Dumont;111,376;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35131;Horizonte Verde
+3514700;Echaporã;515,258;12;RA Marília;9;Demais municípios;5;DRS Marília;35093;Marília
+3514809;Eldorado;1654,256;2;RA Registro;9;Demais municípios;9;DRS Registro;35121;Vale do Ribeira
+3514908;Elias Fausto;202,36;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35103;Piracicaba
+3514924;Elisiário;93,98;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35151;Catanduva
+3514957;Embaúba;83,129;14;RA Barretos;9;Demais municípios;15;DRS São José do Rio Preto;35151;Catanduva
+3515004;Embu das Artes;70,398;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35013;Mananciais
+3515103;Embu-Guaçu;155,641;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35013;Mananciais
+3515129;Emilianópolis;225,167;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3515152;Engenheiro Coelho;109,941;6;RA Campinas;3;RM Campinas;11;DRS Piracicaba;35102;Limeira
+3515186;Espírito Santo do Pinhal;389,235;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35142;Mantiqueira
+3515194;Espírito Santo do Turvo;193,666;12;RA Marília;9;Demais municípios;5;DRS Marília;35094;Ourinhos
+3515202;Estrela d'Oeste;296,281;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35154;Fernandópolis
+3515301;Estrela do Norte;264,987;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3515350;Euclides da Cunha Paulista;573,894;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35115;Pontal do Paranapanema
+3515400;Fartura;429,171;16;RA Itapeva;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3515509;Fernandópolis;549,797;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35154;Fernandópolis
+3515608;Fernando Prestes;169,99;13;RA Central;9;Demais municípios;15;DRS São José do Rio Preto;35151;Catanduva
+3515657;Fernão;100,504;12;RA Marília;9;Demais municípios;5;DRS Marília;35093;Marília
+3515707;Ferraz de Vasconcelos;29,547;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35011;Alto do Tietê
+3515806;Flora Rica;224,711;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35111;Alta Paulista
+3515905;Floreal;204,236;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35157;Votuporanga
+3516002;Flórida Paulista;524,138;11;RA Presidente Prudente;9;Demais municípios;5;DRS Marília;35091;Adamantina
+3516101;Florínea;225,886;12;RA Marília;9;Demais municípios;5;DRS Marília;35092;Assis
+3516200;Franca;605,679;15;RA Franca;9;Demais municípios;4;DRS Franca;35081;Três Colinas
+3516309;Francisco Morato;49,001;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35012;Franco da Rocha
+3516408;Franco da Rocha;132,775;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35012;Franco da Rocha
+3516507;Gabriel Monteiro;138,681;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3516606;Gália;355,914;12;RA Marília;9;Demais municípios;5;DRS Marília;35093;Marília
+3516705;Garça;555,807;12;RA Marília;9;Demais municípios;5;DRS Marília;35093;Marília
+3516804;Gastão Vidigal;180,569;10;RA Araçatuba;9;Demais municípios;15;DRS São José do Rio Preto;35157;Votuporanga
+3516853;Gavião Peixoto;243,766;13;RA Central;9;Demais municípios;8;DRS Araraquara;35031;Central do DRS III
+3516903;General Salgado;494,376;10;RA Araçatuba;9;Demais municípios;15;DRS São José do Rio Preto;35157;Votuporanga
+3517000;Getulina;676,755;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35065;Lins
+3517109;Glicério;272,8;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3517208;Guaiçara;277,154;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35065;Lins
+3517307;Guaimbê;217,811;8;RA Bauru;9;Demais municípios;5;DRS Marília;35093;Marília
+3517406;Guaíra;1258,465;14;RA Barretos;9;Demais municípios;16;DRS Barretos;35051;Norte - Barretos
+3517505;Guapiaçu;325,126;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3517604;Guapiara;408,292;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35162;Itapeva
+3517703;Guará;362,183;15;RA Franca;9;Demais municípios;4;DRS Franca;35083;Alta Mogiana
+3517802;Guaraçaí;569,197;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35022;Lagos do DRS II
+3517901;Guaraci;641,501;14;RA Barretos;9;Demais municípios;16;DRS Barretos;35051;Norte - Barretos
+3518008;Guarani d'Oeste;85,7;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35154;Fernandópolis
+3518107;Guarantã;461,746;8;RA Bauru;9;Demais municípios;5;DRS Marília;35093;Marília
+3518206;Guararapes;955,637;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35021;Central do DRS II
+3518305;Guararema;270,816;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35011;Alto do Tietê
+3518404;Guaratinguetá;752,636;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3518503;Guareí;567,884;5;RA Sorocaba;9;Demais municípios;6;DRS Sorocaba;35161;Itapetininga
+3518602;Guariba;270,289;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35131;Horizonte Verde
+3518701;Guarujá;144,794;3;RA Santos;2;RM Baixada Santista;13;DRS Baixada Santista;35041;Baixada Santista
+3518800;Guarulhos;318,675;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35011;Alto do Tietê
+3518859;Guatapará;413,567;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35132;Aquífero Guarani
+3518909;Guzolândia;252,477;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35021;Central do DRS II
+3519006;Herculândia;364,252;12;RA Marília;9;Demais municípios;5;DRS Marília;35095;Tupã
+3519055;Holambra;65,577;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3519071;Hortolândia;62,416;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3519105;Iacanga;547,393;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3519204;Iacri;321,948;12;RA Marília;9;Demais municípios;5;DRS Marília;35095;Tupã
+3519253;Iaras;401,381;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3519303;Ibaté;290,977;13;RA Central;9;Demais municípios;8;DRS Araraquara;35034;Coração do DRS III
+3519402;Ibirá;271,912;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3519501;Ibirarema;228,23;12;RA Marília;9;Demais municípios;5;DRS Marília;35094;Ourinhos
+3519600;Ibitinga;689,391;13;RA Central;9;Demais municípios;8;DRS Araraquara;35032;Centro Oeste do DRS III
+3519709;Ibiúna;1058,082;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3519808;Icém;362,355;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3519907;Iepê;594,974;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35113;Alto Capivari
+3520004;Igaraçu do Tietê;97,747;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35064;Jaú
+3520103;Igarapava;468,355;15;RA Franca;9;Demais municípios;4;DRS Franca;35083;Alta Mogiana
+3520202;Igaratá;292,953;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35171;Alto Vale do Paraíba
+3520301;Iguape;1978,795;2;RA Registro;9;Demais municípios;9;DRS Registro;35121;Vale do Ribeira
+3520400;Ilhabela;346,389;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35173;Litoral Norte
+3520426;Ilha Comprida;196,567;2;RA Registro;9;Demais municípios;9;DRS Registro;35121;Vale do Ribeira
+3520442;Ilha Solteira;652,641;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35022;Lagos do DRS II
+3520509;Indaiatuba;311,545;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3520608;Indiana;129,367;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3520707;Indiaporã;279,606;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35154;Fernandópolis
+3520806;Inúbia Paulista;87,119;11;RA Presidente Prudente;9;Demais municípios;5;DRS Marília;35091;Adamantina
+3520905;Ipaussu;209,554;12;RA Marília;9;Demais municípios;5;DRS Marília;35094;Ourinhos
+3521002;Iperó;170,289;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3521101;Ipeúna;190,01;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35104;Rio Claro
+3521150;Ipiguá;136,028;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3521200;Iporanga;1152,059;16;RA Itapeva;9;Demais municípios;9;DRS Registro;35121;Vale do Ribeira
+3521309;Ipuã;466,461;15;RA Franca;9;Demais municípios;4;DRS Franca;35082;Alta Anhanguera
+3521408;Iracemápolis;115,118;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35102;Limeira
+3521507;Irapuã;257,612;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35151;Catanduva
+3521606;Irapuru;214,461;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35111;Alta Paulista
+3521705;Itaberá;1100,247;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35162;Itapeva
+3521804;Itaí;1092,884;16;RA Itapeva;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3521903;Itajobi;502,066;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35151;Catanduva
+3522000;Itaju;230,355;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35064;Jaú
+3522109;Itanhaém;601,711;3;RA Santos;2;RM Baixada Santista;13;DRS Baixada Santista;35041;Baixada Santista
+3522158;Itaoca;183,015;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35162;Itapeva
+3522208;Itapecerica da Serra;150,742;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35013;Mananciais
+3522307;Itapetininga;1789,35;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35161;Itapetininga
+3522406;Itapeva;1826,258;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35162;Itapeva
+3522505;Itapevi;82,658;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35014;Rota dos Bandeirantes
+3522604;Itapira;518,416;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35141;Baixa Mogiana
+3522653;Itapirapuã Paulista;406,478;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35162;Itapeva
+3522703;Itápolis;996,747;13;RA Central;9;Demais municípios;8;DRS Araraquara;35032;Centro Oeste do DRS III
+3522802;Itaporanga;507,997;16;RA Itapeva;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3522901;Itapuí;140,023;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35064;Jaú
+3523008;Itapura;301,653;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35022;Lagos do DRS II
+3523107;Itaquaquecetuba;82,622;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35011;Alto do Tietê
+3523206;Itararé;1003,86;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35162;Itapeva
+3523305;Itariri;273,667;2;RA Registro;9;Demais municípios;9;DRS Registro;35121;Vale do Ribeira
+3523404;Itatiba;322,269;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3523503;Itatinga;979,817;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35063;Polo Cuesta
+3523602;Itirapina;564,603;6;RA Campinas;9;Demais municípios;11;DRS Piracicaba;35104;Rio Claro
+3523701;Itirapuã;161,118;15;RA Franca;9;Demais municípios;4;DRS Franca;35081;Três Colinas
+3523800;Itobi;138,986;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35143;Rio Pardo
+3523909;Itu;640,719;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3524006;Itupeva;200,876;6;RA Campinas;9;RM Jundiaí;3;DRS Campinas;35073;Jundiaí
+3524105;Ituverava;704,659;15;RA Franca;9;Demais municípios;4;DRS Franca;35083;Alta Mogiana
+3524204;Jaborandi;273,438;14;RA Barretos;9;Demais municípios;16;DRS Barretos;35051;Norte - Barretos
+3524303;Jaboticabal;706,602;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35131;Horizonte Verde
+3524402;Jacareí;464,272;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35171;Alto Vale do Paraíba
+3524501;Jaci;145,133;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35156;José Bonifácio
+3524600;Jacupiranga;704,136;2;RA Registro;9;Demais municípios;9;DRS Registro;35121;Vale do Ribeira
+3524709;Jaguariúna;141,391;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3524808;Jales;368,574;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35153;Jales
+3524907;Jambeiro;184,413;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35171;Alto Vale do Paraíba
+3525003;Jandira;17,449;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35014;Rota dos Bandeirantes
+3525102;Jardinópolis;501,87;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35132;Aquífero Guarani
+3525201;Jarinu;207,549;6;RA Campinas;9;RM Jundiaí;3;DRS Campinas;35073;Jundiaí
+3525300;Jaú;687,103;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35064;Jaú
+3525409;Jeriquara;141,971;15;RA Franca;9;Demais municípios;4;DRS Franca;35081;Três Colinas
+3525508;Joanópolis;374,293;6;RA Campinas;9;Demais municípios;3;DRS Campinas;35071;Bragança
+3525607;João Ramalho;415,452;12;RA Marília;9;Demais municípios;2;DRS Presidente Prudente;35113;Alto Capivari
+3525706;José Bonifácio;860,2;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35156;José Bonifácio
+3525805;Júlio Mesquita;128,183;12;RA Marília;9;Demais municípios;5;DRS Marília;35093;Marília
+3525854;Jumirim;56,685;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3525904;Jundiaí;431,204;6;RA Campinas;9;RM Jundiaí;3;DRS Campinas;35073;Jundiaí
+3526001;Junqueirópolis;582,565;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35111;Alta Paulista
+3526100;Juquiá;812,799;2;RA Registro;9;Demais municípios;9;DRS Registro;35121;Vale do Ribeira
+3526209;Juquitiba;522,169;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35013;Mananciais
+3526308;Lagoinha;255,472;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35174;Vale do Paraíba/Região Serrana
+3526407;Laranjal Paulista;384,274;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35063;Polo Cuesta
+3526506;Lavínia;537,675;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35022;Lagos do DRS II
+3526605;Lavrinhas;167,067;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3526704;Leme;402,871;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35101;Araras
+3526803;Lençóis Paulista;809,541;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3526902;Limeira;580,711;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35102;Limeira
+3527009;Lindóia;48,756;6;RA Campinas;9;Demais municípios;3;DRS Campinas;35074;Circuito das Águas
+3527108;Lins;570,058;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35065;Lins
+3527207;Lorena;414,16;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3527256;Lourdes;113,94;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3527306;Louveira;55,738;6;RA Campinas;9;RM Jundiaí;3;DRS Campinas;35073;Jundiaí
+3527405;Lucélia;314,81;11;RA Presidente Prudente;9;Demais municípios;5;DRS Marília;35091;Adamantina
+3527504;Lucianópolis;189,536;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3527603;Luís Antônio;598,257;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35132;Aquífero Guarani
+3527702;Luiziânia;166,576;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3527801;Lupércio;155,171;12;RA Marília;9;Demais municípios;5;DRS Marília;35093;Marília
+3527900;Lutécia;475,226;12;RA Marília;9;Demais municípios;5;DRS Marília;35092;Assis
+3528007;Macatuba;224,514;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3528106;Macaubal;248,087;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35157;Votuporanga
+3528205;Macedônia;327,567;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35154;Fernandópolis
+3528304;Magda;312,282;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35157;Votuporanga
+3528403;Mairinque;210,149;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3528502;Mairiporã;320,697;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35012;Franco da Rocha
+3528601;Manduri;229,046;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3528700;Marabá Paulista;919,519;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35114;Extremo Oeste Paulista
+3528809;Maracaí;533,498;12;RA Marília;9;Demais municípios;5;DRS Marília;35092;Assis
+3528858;Marapoama;111,267;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35151;Catanduva
+3528908;Mariápolis;186,544;11;RA Presidente Prudente;9;Demais municípios;5;DRS Marília;35091;Adamantina
+3529005;Marília;1170,515;12;RA Marília;9;Demais municípios;5;DRS Marília;35093;Marília
+3529104;Marinópolis;77,827;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35153;Jales
+3529203;Martinópolis;1254,032;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3529302;Matão;524,899;13;RA Central;9;Demais municípios;8;DRS Araraquara;35033;Norte do DRS III
+3529401;Mauá;61,937;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35015;Grande ABC
+3529500;Mendonça;195,151;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35156;José Bonifácio
+3529609;Meridiano;228,199;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35154;Fernandópolis
+3529658;Mesópolis;148,636;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35153;Jales
+3529708;Miguelópolis;820,849;15;RA Franca;9;Demais municípios;4;DRS Franca;35083;Alta Mogiana
+3529807;Mineiros do Tietê;213,242;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35064;Jaú
+3529906;Miracatu;1001,484;2;RA Registro;9;Demais municípios;9;DRS Registro;35121;Vale do Ribeira
+3530003;Mira Estrela;216,825;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35154;Fernandópolis
+3530102;Mirandópolis;917,694;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35022;Lagos do DRS II
+3530201;Mirante do Paranapanema;1238,931;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35115;Pontal do Paranapanema
+3530300;Mirassol;243,228;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3530409;Mirassolândia;166,125;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3530508;Mococa;855,156;6;RA Campinas;6;RM Ribeirão Preto;14;DRS São João da Boa Vista;35143;Rio Pardo
+3530607;Mogi das Cruzes;712,541;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35011;Alto do Tietê
+3530706;Mogi Guaçu;812,753;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35141;Baixa Mogiana
+3530805;Mogi Mirim;497,708;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35141;Baixa Mogiana
+3530904;Mombuca;133,698;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35103;Piracicaba
+3531001;Monções;104,352;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35157;Votuporanga
+3531100;Mongaguá;142,755;3;RA Santos;2;RM Baixada Santista;13;DRS Baixada Santista;35041;Baixada Santista
+3531209;Monte Alegre do Sul;110,308;6;RA Campinas;9;Demais municípios;3;DRS Campinas;35074;Circuito das Águas
+3531308;Monte Alto;346,95;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35131;Horizonte Verde
+3531407;Monte Aprazível;495,559;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35156;José Bonifácio
+3531506;Monte Azul Paulista;263,463;14;RA Barretos;9;Demais municípios;16;DRS Barretos;35052;Sul - Barretos
+3531605;Monte Castelo;233,547;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35111;Alta Paulista
+3531704;Monteiro Lobato;332,742;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35171;Alto Vale do Paraíba
+3531803;Monte Mor;240,566;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3531902;Morro Agudo;1388,127;15;RA Franca;6;RM Ribeirão Preto;4;DRS Franca;35082;Alta Anhanguera
+3532009;Morungaba;146,752;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3532058;Motuca;228,7;13;RA Central;9;Demais municípios;8;DRS Araraquara;35031;Central do DRS III
+3532108;Murutinga do Sul;250,873;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35022;Lagos do DRS II
+3532157;Nantes;286,647;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35113;Alto Capivari
+3532207;Narandiba;357,325;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3532306;Natividade da Serra;833,372;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35174;Vale do Paraíba/Região Serrana
+3532405;Nazaré Paulista;326,254;6;RA Campinas;9;Demais municípios;3;DRS Campinas;35071;Bragança
+3532504;Neves Paulista;219,05;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3532603;Nhandeara;436,159;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35157;Votuporanga
+3532702;Nipoã;137,609;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35156;José Bonifácio
+3532801;Nova Aliança;217,515;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3532827;Nova Campina;385,375;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35162;Itapeva
+3532843;Nova Canaã Paulista;124,473;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35152;Santa Fé do Sul
+3532868;Nova Castilho;183,396;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35021;Central do DRS II
+3532900;Nova Europa;160,25;13;RA Central;9;Demais municípios;8;DRS Araraquara;35032;Centro Oeste do DRS III
+3533007;Nova Granada;531,796;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3533106;Nova Guataporanga;34,158;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35111;Alta Paulista
+3533205;Nova Independência;265,029;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35022;Lagos do DRS II
+3533254;Novais;117,772;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35151;Catanduva
+3533304;Nova Luzitânia;73,816;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35021;Central do DRS II
+3533403;Nova Odessa;73,788;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3533502;Novo Horizonte;931,743;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35151;Catanduva
+3533601;Nuporanga;348,265;15;RA Franca;6;RM Ribeirão Preto;4;DRS Franca;35082;Alta Anhanguera
+3533700;Ocauçu;301,036;12;RA Marília;9;Demais municípios;5;DRS Marília;35093;Marília
+3533809;Óleo;198,938;12;RA Marília;9;Demais municípios;5;DRS Marília;35094;Ourinhos
+3533908;Olímpia;802,555;14;RA Barretos;9;RM São José do Rio Preto;16;DRS Barretos;35051;Norte - Barretos
+3534005;Onda Verde;242,946;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3534104;Oriente;218,668;12;RA Marília;9;Demais municípios;5;DRS Marília;35093;Marília
+3534203;Orindiúva;247,378;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3534302;Orlândia;291,765;15;RA Franca;6;RM Ribeirão Preto;4;DRS Franca;35082;Alta Anhanguera
+3534401;Osasco;64,954;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35014;Rota dos Bandeirantes
+3534500;Oscar Bressane;222,13;12;RA Marília;9;Demais municípios;5;DRS Marília;35093;Marília
+3534609;Osvaldo Cruz;248,038;11;RA Presidente Prudente;9;Demais municípios;5;DRS Marília;35091;Adamantina
+3534708;Ourinhos;295,818;12;RA Marília;9;Demais municípios;5;DRS Marília;35094;Ourinhos
+3534757;Ouroeste;288,648;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35154;Fernandópolis
+3534807;Ouro Verde;266,778;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35111;Alta Paulista
+3534906;Pacaembu;339,375;11;RA Presidente Prudente;9;Demais municípios;5;DRS Marília;35091;Adamantina
+3535002;Palestina;697,701;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3535101;Palmares Paulista;82,125;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35151;Catanduva
+3535200;Palmeira d'Oeste;318,74;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35153;Jales
+3535309;Palmital;548,407;12;RA Marília;9;Demais municípios;5;DRS Marília;35092;Assis
+3535408;Panorama;356,05;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35111;Alta Paulista
+3535507;Paraguaçu Paulista;1001,492;12;RA Marília;9;Demais municípios;5;DRS Marília;35092;Assis
+3535606;Paraibuna;809,576;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35171;Alto Vale do Paraíba
+3535705;Paraíso;155,186;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35151;Catanduva
+3535804;Paranapanema;1018,724;16;RA Itapeva;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3535903;Paranapuã;140,354;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35153;Jales
+3536000;Parapuã;366,664;12;RA Marília;9;Demais municípios;5;DRS Marília;35095;Tupã
+3536109;Pardinho;209,894;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35063;Polo Cuesta
+3536208;Pariquera-Açu;359,414;2;RA Registro;9;Demais municípios;9;DRS Registro;35121;Vale do Ribeira
+3536257;Parisi;84,737;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35157;Votuporanga
+3536307;Patrocínio Paulista;602,848;15;RA Franca;9;Demais municípios;4;DRS Franca;35081;Três Colinas
+3536406;Paulicéia;374,091;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35111;Alta Paulista
+3536505;Paulínia;138,777;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3536570;Paulistânia;256,178;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3536604;Paulo de Faria;737,986;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3536703;Pederneiras;727,482;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3536802;Pedra Bela;158,587;6;RA Campinas;9;Demais municípios;3;DRS Campinas;35071;Bragança
+3536901;Pedranópolis;260,101;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35154;Fernandópolis
+3537008;Pedregulho;712,604;15;RA Franca;9;Demais municípios;4;DRS Franca;35081;Três Colinas
+3537107;Pedreira;108,817;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3537156;Pedrinhas Paulista;152,309;12;RA Marília;9;Demais municípios;5;DRS Marília;35092;Assis
+3537206;Pedro de Toledo;670,44;2;RA Registro;9;Demais municípios;9;DRS Registro;35121;Vale do Ribeira
+3537305;Penápolis;711,314;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3537404;Pereira Barreto;974,247;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35022;Lagos do DRS II
+3537503;Pereiras;223,136;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35063;Polo Cuesta
+3537602;Peruíbe;326,216;3;RA Santos;2;RM Baixada Santista;13;DRS Baixada Santista;35041;Baixada Santista
+3537701;Piacatu;232,488;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3537800;Piedade;746,868;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3537909;Pilar do Sul;681,248;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3538006;Pindamonhangaba;731,355;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35174;Vale do Paraíba/Região Serrana
+3538105;Pindorama;184,825;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35151;Catanduva
+3538204;Pinhalzinho;154,529;6;RA Campinas;9;Demais municípios;3;DRS Campinas;35071;Bragança
+3538303;Piquerobi;482,769;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35114;Extremo Oeste Paulista
+3538501;Piquete;175,996;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3538600;Piracaia;385,568;6;RA Campinas;9;Demais municípios;3;DRS Campinas;35071;Bragança
+3538709;Piracicaba;1378,069;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35103;Piracicaba
+3538808;Piraju;504,591;16;RA Itapeva;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3538907;Pirajuí;823,758;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3539004;Pirangi;215,809;14;RA Barretos;9;Demais municípios;15;DRS São José do Rio Preto;35151;Catanduva
+3539103;Pirapora do Bom Jesus;108,489;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35014;Rota dos Bandeirantes
+3539202;Pirapozinho;477,673;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3539301;Pirassununga;727,118;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35101;Araras
+3539400;Piratininga;402,409;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3539509;Pitangueiras;430,638;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35131;Horizonte Verde
+3539608;Planalto;289,825;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35156;José Bonifácio
+3539707;Platina;327,48;12;RA Marília;9;Demais municípios;5;DRS Marília;35092;Assis
+3539806;Poá;17,264;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35011;Alto do Tietê
+3539905;Poloni;135,119;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35156;José Bonifácio
+3540002;Pompéia;784,674;12;RA Marília;9;Demais municípios;5;DRS Marília;35093;Marília
+3540101;Pongaí;183,399;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35065;Lins
+3540200;Pontal;356,371;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35131;Horizonte Verde
+3540259;Pontalinda;209,525;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35153;Jales
+3540309;Pontes Gestal;217,505;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35157;Votuporanga
+3540408;Populina;315,938;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35154;Fernandópolis
+3540507;Porangaba;265,689;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35063;Polo Cuesta
+3540606;Porto Feliz;556,706;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3540705;Porto Ferreira;244,906;13;RA Central;9;Demais municípios;8;DRS Araraquara;35034;Coração do DRS III
+3540754;Potim;44,643;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3540804;Potirendaba;342,492;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3540853;Pracinha;63,054;11;RA Presidente Prudente;9;Demais municípios;5;DRS Marília;35091;Adamantina
+3540903;Pradópolis;167,378;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35131;Horizonte Verde
+3541000;Praia Grande;149,652;3;RA Santos;2;RM Baixada Santista;13;DRS Baixada Santista;35041;Baixada Santista
+3541059;Pratânia;175,1;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35063;Polo Cuesta
+3541109;Presidente Alves;286,642;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3541208;Presidente Bernardes;749,233;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3541307;Presidente Epitácio;1260,281;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35114;Extremo Oeste Paulista
+3541406;Presidente Prudente;560,637;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3541505;Presidente Venceslau;755,203;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35114;Extremo Oeste Paulista
+3541604;Promissão;779,2;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35065;Lins
+3541653;Quadra;205,672;5;RA Sorocaba;9;Demais municípios;6;DRS Sorocaba;35161;Itapetininga
+3541703;Quatá;651,341;12;RA Marília;9;Demais municípios;2;DRS Presidente Prudente;35113;Alto Capivari
+3541802;Queiroz;234,914;12;RA Marília;9;Demais municípios;5;DRS Marília;35095;Tupã
+3541901;Queluz;249,399;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3542008;Quintana;318,937;12;RA Marília;9;Demais municípios;5;DRS Marília;35093;Marília
+3542107;Rafard;121,645;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35103;Piracicaba
+3542206;Rancharia;1587,498;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35113;Alto Capivari
+3542305;Redenção da Serra;309,441;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35174;Vale do Paraíba/Região Serrana
+3542404;Regente Feijó;263,313;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3542503;Reginópolis;410,406;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35062;Bauru
+3542602;Registro;722,201;2;RA Registro;9;Demais municípios;9;DRS Registro;35121;Vale do Ribeira
+3542701;Restinga;245,746;15;RA Franca;9;Demais municípios;4;DRS Franca;35081;Três Colinas
+3542800;Ribeira;335,759;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35162;Itapeva
+3542909;Ribeirão Bonito;471,553;13;RA Central;9;Demais municípios;8;DRS Araraquara;35034;Coração do DRS III
+3543006;Ribeirão Branco;697,5;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35162;Itapeva
+3543105;Ribeirão Corrente;148,332;15;RA Franca;9;Demais municípios;4;DRS Franca;35081;Três Colinas
+3543204;Ribeirão do Sul;203,208;12;RA Marília;9;Demais municípios;5;DRS Marília;35094;Ourinhos
+3543238;Ribeirão dos Índios;196,446;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3543253;Ribeirão Grande;333,363;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35161;Itapetininga
+3543303;Ribeirão Pires;98,972;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35015;Grande ABC
+3543402;Ribeirão Preto;650,916;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35132;Aquífero Guarani
+3543501;Riversul;385,878;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35162;Itapeva
+3543600;Rifaina;162,508;15;RA Franca;9;Demais municípios;4;DRS Franca;35081;Três Colinas
+3543709;Rincão;316,639;13;RA Central;9;Demais municípios;8;DRS Araraquara;35031;Central do DRS III
+3543808;Rinópolis;358,481;12;RA Marília;9;Demais municípios;5;DRS Marília;35095;Tupã
+3543907;Rio Claro;498,422;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35104;Rio Claro
+3544004;Rio das Pedras;226,657;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35103;Piracicaba
+3544103;Rio Grande da Serra;36,341;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35015;Grande ABC
+3544202;Riolândia;631,897;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35157;Votuporanga
+3544251;Rosana;744,011;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35115;Pontal do Paranapanema
+3544301;Roseira;129,847;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3544400;Rubiácea;236,484;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35021;Central do DRS II
+3544509;Rubinéia;242,877;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35152;Santa Fé do Sul
+3544608;Sabino;305,285;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35065;Lins
+3544707;Sagres;147,935;11;RA Presidente Prudente;9;Demais municípios;5;DRS Marília;35091;Adamantina
+3544806;Sales;308,555;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35151;Catanduva
+3544905;Sales Oliveira;305,776;15;RA Franca;6;RM Ribeirão Preto;4;DRS Franca;35082;Alta Anhanguera
+3545001;Salesópolis;424,997;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35011;Alto do Tietê
+3545100;Salmourão;172,934;11;RA Presidente Prudente;9;Demais municípios;5;DRS Marília;35091;Adamantina
+3545159;Saltinho;99,738;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35103;Piracicaba
+3545209;Salto;133,057;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3545308;Salto de Pirapora;280,412;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3545407;Salto Grande;188,441;12;RA Marília;9;Demais municípios;5;DRS Marília;35094;Ourinhos
+3545506;Sandovalina;455,856;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3545605;Santa Adélia;330,269;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35151;Catanduva
+3545704;Santa Albertina;272,692;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35153;Jales
+3545803;Santa Bárbara d'Oeste;271,03;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3546009;Santa Branca;272,238;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35171;Alto Vale do Paraíba
+3546108;Santa Clara d'Oeste;183,458;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35152;Santa Fé do Sul
+3546207;Santa Cruz da Conceição;150,13;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35101;Araras
+3546256;Santa Cruz da Esperança;148,062;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35133;Vale das Cachoeiras
+3546306;Santa Cruz das Palmeiras;295,337;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35142;Mantiqueira
+3546405;Santa Cruz do Rio Pardo;1114,747;12;RA Marília;9;Demais municípios;5;DRS Marília;35094;Ourinhos
+3546504;Santa Ernestina;134,421;13;RA Central;9;Demais municípios;8;DRS Araraquara;35033;Norte do DRS III
+3546603;Santa Fé do Sul;206,537;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35152;Santa Fé do Sul
+3546702;Santa Gertrudes;98,291;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35104;Rio Claro
+3546801;Santa Isabel;363,332;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35011;Alto do Tietê
+3546900;Santa Lúcia;153,86;13;RA Central;9;Demais municípios;8;DRS Araraquara;35031;Central do DRS III
+3547007;Santa Maria da Serra;252,621;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35103;Piracicaba
+3547106;Santa Mercedes;166,753;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35111;Alta Paulista
+3547205;Santana da Ponte Pensa;129,888;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35153;Jales
+3547304;Santana de Parnaíba;179,949;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35014;Rota dos Bandeirantes
+3547403;Santa Rita d'Oeste;209,8;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35152;Santa Fé do Sul
+3547502;Santa Rita do Passa Quatro;754,141;13;RA Central;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35132;Aquífero Guarani
+3547601;Santa Rosa de Viterbo;288,576;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35132;Aquífero Guarani
+3547650;Santa Salete;79,192;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35153;Jales
+3547700;Santo Anastácio;552,876;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3547809;Santo André;175,782;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35015;Grande ABC
+3547908;Santo Antônio da Alegria;310,311;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35133;Vale das Cachoeiras
+3548005;Santo Antônio de Posse;154,133;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3548054;Santo Antônio do Aracanguá;1308,432;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35021;Central do DRS II
+3548104;Santo Antônio do Jardim;109,956;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35142;Mantiqueira
+3548203;Santo Antônio do Pinhal;133,008;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35174;Vale do Paraíba/Região Serrana
+3548302;Santo Expedito;94,465;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3548401;Santópolis do Aguapeí;128,026;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3548500;Santos;281,033;3;RA Santos;2;RM Baixada Santista;13;DRS Baixada Santista;35041;Baixada Santista
+3548609;São Bento do Sapucaí;252,579;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35174;Vale do Paraíba/Região Serrana
+3548708;São Bernardo do Campo;409,532;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35015;Grande ABC
+3548807;São Caetano do Sul;15,331;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35015;Grande ABC
+3548906;São Carlos;1136,907;13;RA Central;9;Demais municípios;8;DRS Araraquara;35034;Coração do DRS III
+3549003;São Francisco;75,579;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35153;Jales
+3549102;São João da Boa Vista;516,399;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35142;Mantiqueira
+3549201;São João das Duas Pontes;129,462;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35154;Fernandópolis
+3549250;São João de Iracema;178,396;10;RA Araçatuba;9;Demais municípios;15;DRS São José do Rio Preto;35154;Fernandópolis
+3549300;São João do Pau d'Alho;117,665;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35111;Alta Paulista
+3549409;São Joaquim da Barra;410,863;15;RA Franca;9;Demais municípios;4;DRS Franca;35082;Alta Anhanguera
+3549508;São José da Bela Vista;276,952;15;RA Franca;9;Demais municípios;4;DRS Franca;35081;Três Colinas
+3549607;São José do Barreiro;570,685;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3549706;São José do Rio Pardo;419,684;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35143;Rio Pardo
+3549805;São José do Rio Preto;431,944;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3549904;São José dos Campos;1099,409;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35171;Alto Vale do Paraíba
+3549953;São Lourenço da Serra;186,456;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35013;Mananciais
+3550001;São Luiz do Paraitinga;617,315;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35174;Vale do Paraíba/Região Serrana
+3550100;São Manuel;650,734;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35063;Polo Cuesta
+3550209;São Miguel Arcanjo;930,339;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35161;Itapetininga
+3550308;São Paulo;1521,202;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35016;São Paulo
+3550407;São Pedro;611,278;6;RA Campinas;9;RM Piracicaba;11;DRS Piracicaba;35103;Piracicaba
+3550506;São Pedro do Turvo;731,221;12;RA Marília;9;Demais municípios;5;DRS Marília;35094;Ourinhos
+3550605;São Roque;306,908;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3550704;São Sebastião;402,395;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35173;Litoral Norte
+3550803;São Sebastião da Grama;252,41;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35143;Rio Pardo
+3550902;São Simão;617,252;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35132;Aquífero Guarani
+3551009;São Vicente;148,151;3;RA Santos;2;RM Baixada Santista;13;DRS Baixada Santista;35041;Baixada Santista
+3551108;Sarapuí;352,592;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35161;Itapetininga
+3551207;Sarutaiá;141,608;16;RA Itapeva;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3551306;Sebastianópolis do Sul;167,848;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35157;Votuporanga
+3551405;Serra Azul;283,144;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35132;Aquífero Guarani
+3551504;Serrana;126,046;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35132;Aquífero Guarani
+3551603;Serra Negra;203,734;6;RA Campinas;9;Demais municípios;3;DRS Campinas;35074;Circuito das Águas
+3551702;Sertãozinho;403,089;7;RA Ribeirão Preto;6;RM Ribeirão Preto;1;DRS Ribeirão Preto;35131;Horizonte Verde
+3551801;Sete Barras;1062,699;2;RA Registro;9;Demais municípios;9;DRS Registro;35121;Vale do Ribeira
+3551900;Severínia;140,46;14;RA Barretos;9;RM São José do Rio Preto;16;DRS Barretos;35051;Norte - Barretos
+3552007;Silveiras;414,782;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35172;Circuito da Fé e Vale Histórico
+3552106;Socorro;449,029;6;RA Campinas;9;Demais municípios;3;DRS Campinas;35071;Bragança
+3552205;Sorocaba;449,872;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3552304;Sud Mennucci;594,744;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35022;Lagos do DRS II
+3552403;Sumaré;153,465;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3552502;Suzano;206,236;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35011;Alto do Tietê
+3552551;Suzanápolis;330,587;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35022;Lagos do DRS II
+3552601;Tabapuã;345,792;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35151;Catanduva
+3552700;Tabatinga;368,604;13;RA Central;9;Demais municípios;8;DRS Araraquara;35032;Centro Oeste do DRS III
+3552809;Taboão da Serra;20,388;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35013;Mananciais
+3552908;Taciba;606,766;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3553005;Taguaí;145,332;16;RA Itapeva;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3553104;Taiaçu;107,059;14;RA Barretos;9;Demais municípios;16;DRS Barretos;35052;Sul - Barretos
+3553203;Taiúva;132,459;14;RA Barretos;6;RM Ribeirão Preto;16;DRS Barretos;35052;Sul - Barretos
+3553302;Tambaú;561,788;6;RA Campinas;6;RM Ribeirão Preto;14;DRS São João da Boa Vista;35142;Mantiqueira
+3553401;Tanabi;747,218;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3553500;Tapiraí;755,101;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3553609;Tapiratiba;221,891;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35143;Rio Pardo
+3553658;Taquaral;53,892;7;RA Ribeirão Preto;6;RM Ribeirão Preto;16;DRS Barretos;35052;Sul - Barretos
+3553708;Taquaritinga;594,335;13;RA Central;9;Demais municípios;8;DRS Araraquara;35033;Norte do DRS III
+3553807;Taquarituba;448,515;16;RA Itapeva;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3553856;Taquarivaí;231,792;16;RA Itapeva;9;Demais municípios;6;DRS Sorocaba;35162;Itapeva
+3553906;Tarabai;201,385;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35112;Alta Sorocabana
+3553955;Tarumã;302,913;12;RA Marília;9;Demais municípios;5;DRS Marília;35092;Assis
+3554003;Tatuí;523,749;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35161;Itapetininga
+3554102;Taubaté;625,003;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35174;Vale do Paraíba/Região Serrana
+3554201;Tejupá;296,189;16;RA Itapeva;9;Demais municípios;12;DRS Bauru;35061;Vale do Jurumirim
+3554300;Teodoro Sampaio;1555,803;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35115;Pontal do Paranapanema
+3554409;Terra Roxa;221,541;14;RA Barretos;9;Demais municípios;16;DRS Barretos;35052;Sul - Barretos
+3554508;Tietê;404,396;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3554607;Timburi;196,79;12;RA Marília;9;Demais municípios;5;DRS Marília;35094;Ourinhos
+3554656;Torre de Pedra;71,348;5;RA Sorocaba;9;Demais municípios;12;DRS Bauru;35063;Polo Cuesta
+3554706;Torrinha;315,267;6;RA Campinas;9;Demais municípios;12;DRS Bauru;35064;Jaú
+3554755;Trabiju;63,421;13;RA Central;9;Demais municípios;8;DRS Araraquara;35031;Central do DRS III
+3554805;Tremembé;191,094;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35174;Vale do Paraíba/Região Serrana
+3554904;Três Fronteiras;151,594;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35152;Santa Fé do Sul
+3554953;Tuiuti;126,731;6;RA Campinas;9;Demais municípios;3;DRS Campinas;35071;Bragança
+3555000;Tupã;627,986;12;RA Marília;9;Demais municípios;5;DRS Marília;35095;Tupã
+3555109;Tupi Paulista;244,77;11;RA Presidente Prudente;9;Demais municípios;2;DRS Presidente Prudente;35111;Alta Paulista
+3555208;Turiúba;153,235;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35023;Consórcios do DRS II
+3555307;Turmalina;147,797;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35154;Fernandópolis
+3555356;Ubarana;209,861;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35156;José Bonifácio
+3555406;Ubatuba;708,105;4;RA São José dos Campos;4;RM Vale Paraíba e Litoral Norte;17;DRS Taubaté;35173;Litoral Norte
+3555505;Ubirajara;282,179;8;RA Bauru;9;Demais municípios;5;DRS Marília;35093;Marília
+3555604;Uchoa;252,434;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35155;São José do Rio Preto
+3555703;União Paulista;79,056;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35156;José Bonifácio
+3555802;Urânia;209,262;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35153;Jales
+3555901;Uru;146,901;8;RA Bauru;9;Demais municípios;12;DRS Bauru;35065;Lins
+3556008;Urupês;323,916;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35151;Catanduva
+3556107;Valentim Gentil;149,741;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35157;Votuporanga
+3556206;Valinhos;148,538;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3556305;Valparaíso;857,661;10;RA Araçatuba;9;Demais municípios;7;DRS Araçatuba;35021;Central do DRS II
+3556354;Vargem;142,595;6;RA Campinas;9;Demais municípios;3;DRS Campinas;35071;Bragança
+3556404;Vargem Grande do Sul;267,178;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35142;Mantiqueira
+3556453;Vargem Grande Paulista;42,489;1;RM  São Paulo;1;RM São Paulo;10;DRS Grande São Paulo;35013;Mananciais
+3556503;Várzea Paulista;35,12;6;RA Campinas;9;RM Jundiaí;3;DRS Campinas;35073;Jundiaí
+3556602;Vera Cruz;247,716;12;RA Marília;9;Demais municípios;5;DRS Marília;35093;Marília
+3556701;Vinhedo;80,95;6;RA Campinas;3;RM Campinas;3;DRS Campinas;35072;Região Metropolitana de Campinas
+3556800;Viradouro;217,726;14;RA Barretos;9;Demais municípios;16;DRS Barretos;35052;Sul - Barretos
+3556909;Vista Alegre do Alto;95,429;14;RA Barretos;9;Demais municípios;16;DRS Barretos;35052;Sul - Barretos
+3556958;Vitória Brasil;49,832;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35153;Jales
+3557006;Votorantim;184,186;5;RA Sorocaba;5;RM Sorocaba;6;DRS Sorocaba;35163;Sorocaba
+3557105;Votuporanga;420,703;9;RA São José do Rio Preto;9;Demais municípios;15;DRS São José do Rio Preto;35157;Votuporanga
+3557154;Zacarias;319,056;9;RA São José do Rio Preto;9;RM São José do Rio Preto;15;DRS São José do Rio Preto;35156;José Bonifácio
+3557204;Chavantes;188,727;12;RA Marília;9;Demais municípios;5;DRS Marília;35094;Ourinhos
+3557303;Estiva Gerbi;74,144;6;RA Campinas;9;Demais municípios;14;DRS São João da Boa Vista;35141;Baixa Mogiana

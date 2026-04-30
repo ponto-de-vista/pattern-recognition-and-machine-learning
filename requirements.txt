@@ -7,3 +7,5 @@ sympy
 scipy
 scikit-learn
 openpyxl
+selenium
+webdriver-manager
