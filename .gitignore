@@ -2,12 +2,8 @@
 *.xlsx
 /pib-datasets/
 /criminal-datasets/
-<<<<<<< HEAD
-*.duckdb
 .venv/
-=======
 /despesas-datasets/
 *.duckdb
 .vscode/
 !codigos_municipios_regioes.csv
->>>>>>> 76dd367 (feat: add webscrapping)
