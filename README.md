@@ -13,6 +13,8 @@ https://duckdb.org/
 
 ## Data PREP - steps
 
+Filter columns for the project in step 1 or 3.
+
 1. Convert to Parquet Individually: Loop through your 10 heavy CSV files and run a simple COPY command to convert each one into a compressed Parquet file to eliminate CSV parsing lag.
 
 2. Stack the Data: Use SELECT * FROM read_parquet('domain_folder/*.parquet', union_by_name = true) to virtually combine all the years into a single table.

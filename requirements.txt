@@ -9,3 +9,5 @@ scikit-learn
 openpyxl
 selenium
 webdriver-manager
+chardet
+seaborn
