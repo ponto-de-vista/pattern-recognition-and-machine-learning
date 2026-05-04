@@ -879,21 +879,31 @@ def gerar_dataset_mestre():
     query = f"""
         COPY (
             SELECT 
-                -- Identificadores e Tempo
+                -- 1. IDENTIFICADORES E TEMPO
                 d.cod_ibge,
                 d.city,
                 d.year,
                 d.month,
                 
-                -- 1. DESPESAS PÚBLICAS (Buckets Agregados)
+                -- 2. DESPESAS PÚBLICAS
                 d.gasto_seguranca,
                 d.gasto_social_basico,
                 d.gasto_infraestrutura,
                 d.gasto_maquina_publica,
                 d.gasto_desenvolvimento,
                 d.gasto_outros,
+                -- Detalhamento de Segurança
+                d.seguranca_operacional,
+                d.seguranca_inteligencia,
+                d.seguranca_administrativa,
+                -- Detalhamento de Fontes de Recurso
+                d.fonte_recursos_proprios,
+                d.fonte_transferencias,
+                d.fonte_operacoes_credito,
+                d.fonte_emendas,
+                d.fonte_outras,
                 
-                -- 2. ECONOMIA E PIB (Identificação por prefixo pib_)
+                -- 3. ECONOMIA E PIB
                 p.pib_total,
                 p.pib_per_capita,
                 p.agropecuaria AS pib_agropecuaria,
@@ -902,7 +912,7 @@ def gerar_dataset_mestre():
                 p.adm_publica AS pib_adm_publica,
                 p.impostos AS pib_impostos_liquidos,
 
-                -- 3. CRIMES (Buckets de Ocorrências Mensais - Regras SSP-SP)
+                -- 4. CRIMES (Buckets Agregados)
                 (COALESCE(c.total_de_roubo_outros, 0) + COALESCE(c.roubo_de_veiculo, 0) + 
                  COALESCE(c.furto_outros, 0) + COALESCE(c.furto_de_veiculo, 0)) AS crimes_patrimonio,
                 
@@ -918,12 +928,10 @@ def gerar_dataset_mestre():
 
             FROM '{arquivo_despesas}' AS d
             
-            -- Join Anual do PIB (Chaves: IBGE + Ano)
             LEFT JOIN '{arquivo_pib}' AS p 
                 ON CAST(d.cod_ibge AS VARCHAR) = CAST(p.cod_ibge AS VARCHAR) 
                 AND d.year = p.ano_exercicio
                 
-            -- Join Mensal dos Crimes (Chaves: IBGE + Ano + Mês)
             LEFT JOIN '{arquivo_crimes}' AS c 
                 ON CAST(d.cod_ibge AS VARCHAR) = CAST(c.cod_ibge AS VARCHAR) 
                 AND d.year = c.year
@@ -936,7 +944,7 @@ def gerar_dataset_mestre():
     
     total_linhas = con.execute(f"SELECT count(*) FROM '{arquivo_destino}'").fetchone()[0]
     print(f"Finalizada com {total_linhas:,} linhas!")
-    print(f"Arquivo mestre disponível em: {arquivo_destino}")
+    print(f"Arquivo pronto em: {arquivo_destino}")
 
 
 if __name__ == "__main__":
@@ -944,4 +952,3 @@ if __name__ == "__main__":
     describe_dataset_columns()
     cardinalidade_despesas()
     extrair_dicionario_dados()
-    
