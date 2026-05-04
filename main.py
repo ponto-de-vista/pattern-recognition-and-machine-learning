@@ -530,15 +530,418 @@ def run_eda_despesas():
     """).df()
     print(stats)
 
+def unified_crime_parquet():
+    duckdb.execute("""
+        COPY (
+            SELECT * FROM read_parquet('./crime-datasets/crime-20*.parquet', union_by_name=true)
+        ) TO './crime-datasets/crime-2009-2018.parquet' (FORMAT PARQUET, COMPRESSION 'ZSTD')
+    """)
+
+def describe_dataset_columns():
+    con = duckdb.connect()
+
+    con.execute("PRAGMA memory_limit='8GB'")
+
+    files = [
+        './despesas-datasets/despesas-2009-2018-pivot.parquet', 
+        './pib-datasets/pib-2009-2018.parquet', 
+        './crime-datasets/crime-2009-2018.parquet'
+    ]
+
+    for f in files:
+        print(f"\n file: {f}")
+        linhas = con.execute(f"SELECT count(*) FROM '{f}'").fetchone()[0]
+        print(f"Total de linhas: {linhas:,}")
+
+        schema = con.execute(f"DESCRIBE SELECT * FROM '{f}'").df()
+        print(schema[['column_name', 'column_type']].to_string(index=False))
+
+def cardinalidade_despesas():
+    con = duckdb.connect()
+    con.execute("PRAGMA memory_limit='8GB'")
+
+    print("Calculando a cardinalidade REAL (Limpa) das colunas categóricas...\n")
+
+    query = """
+        SELECT 
+            COUNT(DISTINCT UPPER(TRIM(ds_funcao_governo))) AS qtd_funcoes_limpas,
+            COUNT(DISTINCT UPPER(TRIM(ds_subfuncao_governo))) AS qtd_subfuncoes_limpas,
+            COUNT(DISTINCT UPPER(TRIM(ds_programa))) AS qtd_programas_limpos,
+            COUNT(DISTINCT UPPER(TRIM(ds_acao))) AS qtd_acoes_limpas,
+            COUNT(DISTINCT UPPER(TRIM(ds_fonte_recurso))) AS qtd_fontes_limpas,
+            COUNT(DISTINCT UPPER(TRIM(ds_elemento))) AS qtd_elementos_limpos
+        FROM './despesas-datasets/despesas-2009-2018.parquet'
+    """
+
+    resultado = con.execute(query).df()
+    print(resultado.T)
+
+
+def extrair_dicionario_dados():
+    con = duckdb.connect()
+    con.execute("PRAGMA memory_limit='8GB'")
+
+    print("Extraindo dicionário de dados limpo e filtrado...\n")
+
+    def pegar_lista(coluna, filtro_extra=""):
+        query = f"""
+            SELECT DISTINCT UPPER(TRIM({coluna})) AS categoria_limpa
+            FROM './despesas-datasets/despesas-2009-2018.parquet' 
+            WHERE {coluna} IS NOT NULL {filtro_extra}
+            ORDER BY 1
+        """
+        return con.execute(query).df()['categoria_limpa'].tolist()
+
+    # 1. Funções globais
+    funcoes = pegar_lista("ds_funcao_governo")
+    
+    # 2. Fontes globais
+    fontes = pegar_lista("ds_fonte_recurso")
+
+    # 3. Subfunções (Filtro 1: Apenas Segurança Pública)
+    trava_seguranca = "AND (ds_funcao_governo ILIKE '%segurança%' OR ds_funcao_governo ILIKE '%seguranca%')"
+    subfuncoes_seguranca = pegar_lista("ds_subfuncao_governo", trava_seguranca)
+
+    # --- ÁREA DE IMPRESSÃO ---
+    print(f"🔹 FUNÇÕES REAIS ({len(funcoes)}):")
+    print(funcoes, "\n")
+
+    print(f"🔹 FONTES DE RECURSO REAIS ({len(fontes)}):")
+    print(fontes, "\n")
+
+    print(f"🔹 SUBFUNÇÕES REAIS (Filtradas para Segurança Pública) ({len(subfuncoes_seguranca)}):")
+    for sf in subfuncoes_seguranca:
+        print(f"  - {sf}")
+    print("\n")
+
+
+def auditar_seguranca_estrategica():
+    con = duckdb.connect()
+    con.execute("PRAGMA memory_limit='8GB'")
+
+    print("🔍 Filtrando apenas as Subfunções Estratégicas de Segurança...\n")
+
+    # Criamos a regra de filtro uma vez para não repetir nas 3 queries
+    filtro_estrategico = """
+        (ds_funcao_governo ILIKE '%segurança%' OR ds_funcao_governo ILIKE '%seguranca%')
+        AND (
+            ds_subfuncao_governo ILIKE '%policiamento%'
+            OR ds_subfuncao_governo ILIKE '%defesa civil%'
+            OR ds_subfuncao_governo ILIKE '%informação e inteligência%'
+            OR ds_subfuncao_governo ILIKE '%tecnologia da informa%'
+            OR ds_subfuncao_governo ILIKE '%tecnologia da informatização%'
+        )
+    """
+
+    # 1. Nova contagem reduzida
+    query_count = f"""
+        SELECT 
+            COUNT(DISTINCT ds_acao) AS qtd_acoes_estrategicas,
+            COUNT(DISTINCT ds_elemento) AS qtd_elementos_estrategicos
+        FROM './despesas-datasets/despesas-2009-2018.parquet'
+        WHERE {filtro_estrategico}
+    """
+    
+    resultado = con.execute(query_count).df()
+    print("🎯 Nova Cardinalidade (Pós-Filtro de Subfunção):")
+    print(resultado.T)
+    print("-" * 50)
+
+    # 2. Extraímos a lista de ELEMENTOS filtrada
+    query_elementos = f"""
+        SELECT DISTINCT ds_elemento
+        FROM './despesas-datasets/despesas-2009-2018.parquet'
+        WHERE {filtro_estrategico}
+        ORDER BY 1
+    """
+    elementos = con.execute(query_elementos).df()['ds_elemento'].tolist()
+    
+    print(f"\n📋 LISTA DE ELEMENTOS ({len(elementos)}):")
+    print(elementos)
+
+    # 3. Extraímos a lista de AÇÕES filtrada
+    query_acoes = f"""
+        SELECT DISTINCT ds_acao
+        FROM './despesas-datasets/despesas-2009-2018.parquet'
+        WHERE {filtro_estrategico}
+        ORDER BY 1
+    """
+    acoes = con.execute(query_acoes).df()['ds_acao'].tolist()
+
+    print(f"\n📋 LISTA DE AÇÕES ({len(acoes)}):")
+    print(acoes[:20]) # Mostra só as 20 primeiras no terminal
+    
+    resto = len(acoes) - 20
+    if resto > 0:
+        print(f"\n... [E mais {resto} ações não exibidas aqui para não travar o terminal]")
+
+    # 4. Salva as ações em um arquivo de texto
+    caminho_arquivo = "dicionario_acoes_filtradas_seguranca.txt"
+    with open(caminho_arquivo, "w", encoding="utf-8") as f:
+        f.write("=== DICIONÁRIO DE AÇÕES (POLICIAMENTO, DEFESA CIVIL E INTELIGÊNCIA) ===\n\n")
+        for acao in acoes:
+            f.write(f"{acao}\n")
+            
+    print(f"\n✅ DICA: O arquivo '{caminho_arquivo}' foi atualizado com a sua lista hiper-focada!")
+
+
+def auditar_subfuncoes_seguranca():
+    con = duckdb.connect()
+    con.execute("PRAGMA memory_limit='8GB'")
+
+    print("🔍 Procurando Subfunções exclusivas da Segurança Pública...\n")
+
+    query = """
+        SELECT DISTINCT ds_subfuncao_governo
+        FROM './despesas-datasets/despesas-2009-2018.parquet'
+        WHERE ds_funcao_governo ILIKE '%segurança%' 
+           OR ds_funcao_governo ILIKE '%seguranca%'
+        ORDER BY 1
+    """
+    
+    subfuncoes = con.execute(query).df()['ds_subfuncao_governo'].tolist()
+    
+    print(f"🎯 Encontramos {len(subfuncoes)} Subfunções de Segurança cadastradas:")
+    for sf in subfuncoes:
+        print(f"  - {sf}")
+
+
+def gerar_dataset_pivotado_despesas(arquivo_origem, arquivo_destino):
+    """
+    Lê o dataset de despesas original, aplica agregações financeiras baseadas em 
+    Funções, Subfunções e Fontes de Recurso, e salva um novo arquivo parquet pivotado.
+    """
+    print(f"🔄 Iniciando o processamento do dataset...")
+    print(f"📂 Origem: {arquivo_origem}")
+    print(f"💾 Destino: {arquivo_destino}")
+
+    # Cria a conexão com o DuckDB
+    con = duckdb.connect()
+
+    # Define um limite de memória para evitar travamentos
+    con.execute("PRAGMA memory_limit='8GB'")
+    
+    # Se o arquivo de destino já existir, remove para não dar erro
+    if os.path.exists(arquivo_destino):
+        os.remove(arquivo_destino)
+
+    query = f"""
+        COPY (
+            SELECT 
+                cod_ibge,
+                ds_municipio AS city,
+                ano_exercicio AS year,
+                mes_referencia AS month,
+                
+                -- ==========================================
+                -- 1. FUNÇÕES DO GOVERNO (MACRO-SETORES)
+                -- ==========================================
+                
+                SUM(CASE WHEN UPPER(TRIM(ds_funcao_governo)) = 'SEGURANÇA PÚBLICA' THEN vl_despesa ELSE 0 END) AS gasto_seguranca,
+                
+                SUM(CASE WHEN UPPER(TRIM(ds_funcao_governo)) IN ('SAÚDE', 'EDUCAÇÃO', 'ASSISTÊNCIA SOCIAL') THEN vl_despesa ELSE 0 END) AS gasto_social_basico,
+                
+                SUM(CASE WHEN UPPER(TRIM(ds_funcao_governo)) IN ('HABITAÇÃO', 'SANEAMENTO', 'TRANSPORTE', 'URBANISMO') THEN vl_despesa ELSE 0 END) AS gasto_infraestrutura,
+                
+                SUM(CASE WHEN UPPER(TRIM(ds_funcao_governo)) IN ('ADMINISTRAÇÃO', 'ENCARGOS ESPECIAIS', 'ESSENCIAL À JUSTIÇA', 'JUDICIÁRIA', 'LEGISLATIVA', 'PREVIDÊNCIA SOCIAL', 'RESERVA DE CONTINGÊNCIA') THEN vl_despesa ELSE 0 END) AS gasto_maquina_publica,
+                
+                SUM(CASE WHEN UPPER(TRIM(ds_funcao_governo)) IN ('AGRICULTURA', 'CIÊNCIA E TECNOLOGIA', 'COMUNICAÇÕES', 'COMÉRCIO E SERVIÇOS', 'ENERGIA', 'INDÚSTRIA', 'ORGANIZAÇÃO AGRÁRIA', 'TRABALHO') THEN vl_despesa ELSE 0 END) AS gasto_desenvolvimento,
+                
+                SUM(CASE WHEN UPPER(TRIM(ds_funcao_governo)) IN ('CULTURA', 'DEFESA NACIONAL', 'DESPORTO E LAZER', 'DIREITOS DA CIDADANIA', 'GESTÃO AMBIENTAL', 'RELAÇÕES EXTERIORES') THEN vl_despesa ELSE 0 END) AS gasto_outros,
+
+                -- ==========================================
+                -- 2. SUBFUNÇÕES DA SEGURANÇA (DIMENSÕES)
+                -- ==========================================
+                
+                SUM(CASE WHEN (ds_funcao_governo ILIKE '%segurança%' OR ds_funcao_governo ILIKE '%seguranca%') 
+                          AND UPPER(TRIM(ds_subfuncao_governo)) IN ('DEFESA CIVIL', 'POLICIAMENTO') THEN vl_despesa ELSE 0 END) AS seguranca_operacional,
+                
+                SUM(CASE WHEN (ds_funcao_governo ILIKE '%segurança%' OR ds_funcao_governo ILIKE '%seguranca%') 
+                          AND UPPER(TRIM(ds_subfuncao_governo)) IN ('INFORMAÇÃO E INTELIGÊNCIA', 'TECNOLOGIA DA INFORMAÇÃO', 'TECNOLOGIA DA INFORMATIZAÇÃO') THEN vl_despesa ELSE 0 END) AS seguranca_inteligencia,
+                
+                SUM(CASE WHEN (ds_funcao_governo ILIKE '%segurança%' OR ds_funcao_governo ILIKE '%seguranca%') 
+                          AND UPPER(TRIM(ds_subfuncao_governo)) IN ('ADMINISTRAÇÃO GERAL', 'ALIMENTAÇÃO E NUTRIÇÃO', 'ASSISTÊNCIA COMUNITÁRIA', 'ASSISTÊNCIA À CRIANÇA E AO ADOSLESCENTE', 'COMUNICAÇÃO SOCIAL', 'DEFESA TERRESTRE', 'DIFUSÃO CULTURAL', 'DIREITOS INDIVIDUAIS, COLETIVOS E DIFUSOS', 'EDUCAÇÃO INFANTIL', 'ENSINO FUNDAMENTAL', 'FORMAÇÃO DE RECURSOS HUMANOS', 'INFRA-ESTRUTURA URBANA', 'NORMATIZAÇÃO E FISCALIZAÇÃO', 'PLANEJAMENTO E ORÇAMENTO', 'PREVIDÊNCIA BÁSICA', 'PREVIDÊNCIA DO REGIME ESTATUTÁRIO', 'PROTEÇÃO E BENEFÍCIOS AO TRABALHADOR', 'SERVIÇOS URBNOS', 'TRANSFERÊNCIAS', 'TRANSPORTE RODOVIÁRIO', 'TRANSPORTES COLETIVOS URBANOS', 'TURISMO') THEN vl_despesa ELSE 0 END) AS seguranca_administrativa,
+
+                -- ==========================================
+                -- 3. FONTES DE RECURSO (SUPER-BALDES ECONÔMICOS)
+                -- ==========================================
+                
+                SUM(CASE WHEN UPPER(TRIM(ds_fonte_recurso)) IN ('RECURSOS PRÓPRIOS', 'RECURSOS PRÓPRIOS DA ADMINISTRAÇÃO INDIRETA', 'RECURSOS PRÓPRIOS DA ADMINISTRAÇÃO INDIRETA - EXERCICIOS ANTERIORES', 'RECURSOS PRÓPRIOS DA EMPRESA DEPENDENTE', 'RECURSOS PRÓPRIOS DE FUNDOS ESPECIAIS DE DESPESA-VINCULADOS', 'RECURSOS PRÓPRIOS DE FUNDOS ESPECIAIS DE DESPESA-VINCULADOS - EXERCICIOS ANTERIORES', 'TESOURO', 'TESOURO - EXERCICIOS ANTERIORES', 'TESOURO MUNICIPAL', 'TESOURO MUNICIPAL - RECURSOS VINCULADOS') THEN vl_despesa ELSE 0 END) AS fonte_recursos_proprios,
+                
+                SUM(CASE WHEN UPPER(TRIM(ds_fonte_recurso)) IN ('FUNDO CONSTITUCIONAL DA EDUCAÇÃO', 'TRANSFERÊNCIAS E CONVÊNIOS ESTADUAIS-VINCULADOS', 'TRANSFERÊNCIAS E CONVÊNIOS ESTADUAIS-VINCULADOS - EXERCICIOS ANTERIORES', 'TRANSFERÊNCIAS E CONVÊNIOS FEDERAIS-VINCULADOS', 'TRANSFERÊNCIAS E CONVÊNIOS FEDERAIS-VINCULADOS - EXERCICIOS ANTERIORES', 'TRANSFERÊNCIAS ESTADUAIS', 'TRANSFERÊNCIAS FEDERAIS') THEN vl_despesa ELSE 0 END) AS fonte_transferencias,
+                
+                SUM(CASE WHEN UPPER(TRIM(ds_fonte_recurso)) IN ('OPERAÇÕES DE CRÉDITO', 'OPERAÇÕES DE CRÉDITO - EXERCICIOS ANTERIORES') THEN vl_despesa ELSE 0 END) AS fonte_operacoes_credito,
+                
+                SUM(CASE WHEN UPPER(TRIM(ds_fonte_recurso)) IN ('EMENDAS PARLAMENTARES INDIVIDUAIS', 'EMENDAS PARLAMENTARES INDIVIDUAIS - EXERCÍCIOS ANTERIORES') THEN vl_despesa ELSE 0 END) AS fonte_emendas,
+                
+                SUM(CASE WHEN UPPER(TRIM(ds_fonte_recurso)) IN ('ALIENAÇÃO DE BENS/ATIVOS', 'DEPÓSITOS JUDICIAIS', 'OUTRAS FONTES', 'OUTRAS FONTES DE RECURSOS', 'OUTRAS FONTES DE RECURSOS - EXERCICIOS ANTERIORES', 'RECEITA CONDICIONADA') THEN vl_despesa ELSE 0 END) AS fonte_outras
+
+            FROM '{arquivo_origem}'
+            
+            -- Remove linhas onde o cod_ibge é nulo para garantir a integridade da chave
+            WHERE cod_ibge IS NOT NULL
+            
+            -- Agrupa por Município, Nome do Município, Ano e Mês (Chave Primária Composta)
+            GROUP BY cod_ibge, ds_municipio, ano_exercicio, mes_referencia
+            
+        ) TO '{arquivo_destino}' (FORMAT PARQUET, COMPRESSION 'ZSTD')
+    """
+    
+    con.execute(query)
+    
+    # Validação Básica
+    total_linhas = con.execute(f"SELECT count(*) FROM '{arquivo_destino}'").fetchone()[0]
+    print(f"✅ Processamento concluído!")
+    print(f"📊 O novo dataset gerado tem {total_linhas:,} linhas agregadas.")
+    print(f"🚀 O arquivo está pronto em: {arquivo_destino}")
+
+
+
+def encontrar_cidade_duplicada():
+    con = duckdb.connect()
+    
+    print("🕵️ Buscando a cidade com dupla identidade no dataset...\n")
+    
+    query = """
+        SELECT 
+            cod_ibge, 
+            COUNT(DISTINCT ds_municipio) AS qtd_nomes,
+            LIST(DISTINCT ds_municipio) AS nomes_utilizados
+        FROM './despesas-datasets/despesas-2009-2018.parquet'
+        GROUP BY cod_ibge
+        HAVING COUNT(DISTINCT ds_municipio) > 1
+    """
+    
+    resultado = con.execute(query).df()
+    
+    if resultado.empty:
+        print("Nenhuma anomalia encontrada.")
+    else:
+        print("🚨 Encontramos a inconsistência! Veja quem é o culpado:")
+        print(resultado)
+
+
+def padronizar_nomes_ibge(diretorio_parquet, arquivo_csv_ibge):
+    con = duckdb.connect()
+    con.execute("PRAGMA memory_limit='8GB'")
+    
+    print("📥 Lendo CSV do IBGE (Lidando com os encodings brasileiros...)")
+    
+    # Usamos o Pandas para ler o CSV ignorando o problema do UTF-8.
+    # O encoding 'latin1' (ou 'iso-8859-1') resolve 99.9% dos arquivos do IBGE/Governo.
+    df_ibge = pd.read_csv(arquivo_csv_ibge, sep=';', encoding='latin1')
+    
+    arquivos = glob.glob(f"{diretorio_parquet}/*.parquet")
+    
+    print("🧹 Iniciando a padronização oficial dos nomes...")
+    
+    for arquivo in arquivos:
+        # Pula o arquivo pivot para não alterar a tabela final
+        if "pivot" in arquivo:
+            continue
+            
+        print(f"Corrigindo ortografia no arquivo: {arquivo}")
+        
+        arquivo_temp = arquivo.replace(".parquet", "_temp.parquet")
+        
+        # A mágica do DuckDB: note que fizemos LEFT JOIN direto na variável 'df_ibge' do Pandas!
+        query = f"""
+            COPY (
+                SELECT 
+                    t1.* EXCLUDE (ds_municipio),
+                    COALESCE(UPPER(TRIM(t2.municipio)), t1.ds_municipio) AS ds_municipio
+                FROM '{arquivo}' AS t1
+                LEFT JOIN df_ibge AS t2
+                ON CAST(t1.cod_ibge AS VARCHAR) = CAST(t2.cod_ibge AS VARCHAR)
+            ) TO '{arquivo_temp}' (FORMAT PARQUET, COMPRESSION 'ZSTD')
+        """
+        con.execute(query)
+        
+        os.remove(arquivo)
+        os.rename(arquivo_temp, arquivo)
+        
+    print("\n✅ Todos os datasets base foram atualizados com os nomes oficiais do IBGE!")
+
+
+def gerar_dataset_mestre():
+    con = duckdb.connect()
+    con.execute("PRAGMA memory_limit='8GB'")
+
+    arquivo_despesas = './despesas-datasets/despesas-2009-2018-pivot.parquet'
+    arquivo_pib = './pib-datasets/pib-2009-2018.parquet' 
+    arquivo_crimes = './crime-datasets/crime-2009-2018.parquet' 
+    arquivo_destino = './dataset-mestre/crime-despesa-pib-2009-2018.parquet'
+
+    os.makedirs(os.path.dirname(arquivo_destino), exist_ok=True)
+    if os.path.exists(arquivo_destino):
+        os.remove(arquivo_destino)
+
+    query = f"""
+        COPY (
+            SELECT 
+                -- Identificadores e Tempo
+                d.cod_ibge,
+                d.city,
+                d.year,
+                d.month,
+                
+                -- 1. DESPESAS PÚBLICAS (Buckets Agregados)
+                d.gasto_seguranca,
+                d.gasto_social_basico,
+                d.gasto_infraestrutura,
+                d.gasto_maquina_publica,
+                d.gasto_desenvolvimento,
+                d.gasto_outros,
+                
+                -- 2. ECONOMIA E PIB (Identificação por prefixo pib_)
+                p.pib_total,
+                p.pib_per_capita,
+                p.agropecuaria AS pib_agropecuaria,
+                p.industria AS pib_industria,
+                p.servicos AS pib_servicos,
+                p.adm_publica AS pib_adm_publica,
+                p.impostos AS pib_impostos_liquidos,
+
+                -- 3. CRIMES (Buckets de Ocorrências Mensais - Regras SSP-SP)
+                (COALESCE(c.total_de_roubo_outros, 0) + COALESCE(c.roubo_de_veiculo, 0) + 
+                 COALESCE(c.furto_outros, 0) + COALESCE(c.furto_de_veiculo, 0)) AS crimes_patrimonio,
+                
+                (COALESCE(c.homicidio_doloso, 0) + COALESCE(c.latrocinio, 0) + 
+                 COALESCE(c.lesao_corporal_seguida_de_morte, 0) + COALESCE(c.tentativa_de_homicidio, 0)) AS crimes_violentos_vida,
+                
+                (COALESCE(c.total_de_estupro, 0)) AS crimes_dignidade_sexual,
+                
+                (COALESCE(c.homicidio_culposo_outros, 0) + COALESCE(c.homicidio_culposo_por_acidente_de_transito, 0) +
+                 COALESCE(c.lesao_corporal_culposa_outras, 0) + COALESCE(c.lesao_corporal_culposa_por_acidente_de_transito, 0)) AS crimes_transito_e_culposos,
+                
+                (COALESCE(c.lesao_corporal_dolosa, 0)) AS crimes_outros_violentos
+
+            FROM '{arquivo_despesas}' AS d
+            
+            -- Join Anual do PIB (Chaves: IBGE + Ano)
+            LEFT JOIN '{arquivo_pib}' AS p 
+                ON CAST(d.cod_ibge AS VARCHAR) = CAST(p.cod_ibge AS VARCHAR) 
+                AND d.year = p.ano_exercicio
+                
+            -- Join Mensal dos Crimes (Chaves: IBGE + Ano + Mês)
+            LEFT JOIN '{arquivo_crimes}' AS c 
+                ON CAST(d.cod_ibge AS VARCHAR) = CAST(c.cod_ibge AS VARCHAR) 
+                AND d.year = c.year
+                AND d.month = c.month
+                
+        ) TO '{arquivo_destino}' (FORMAT PARQUET, COMPRESSION 'ZSTD')
+    """
+    
+    con.execute(query)
+    
+    total_linhas = con.execute(f"SELECT count(*) FROM '{arquivo_destino}'").fetchone()[0]
+    print(f"Finalizada com {total_linhas:,} linhas!")
+    print(f"Arquivo mestre disponível em: {arquivo_destino}")
+
 
 if __name__ == "__main__":
 
-    #convert_csv_to_parquet(domain='despesas', encode='iso-8859_9-1999')
-    #convert_pib_csv_to_parquet_with_ibge(domain='pib', encode="utf-8")
-
-    #add_ibge_to_despesas_parquets(domain='despesas')
-    #gerar_parquets_capital()
-    #filtrar_parquets_estado()
-    #consolidar_decada_por_dominio()
-    run_eda_despesas()
-
+    describe_dataset_columns()
+    cardinalidade_despesas()
+    extrair_dicionario_dados()
+    

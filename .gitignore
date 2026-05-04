@@ -1,9 +1,10 @@
 *.csv
 *.xlsx
 /pib-datasets/
-/criminal-datasets/
-.venv/
+/crime-datasets/
 /despesas-datasets/
+/dataset-mestre/
+.venv/
 *.duckdb
 .vscode/
 !codigos_municipios_regioes.csv

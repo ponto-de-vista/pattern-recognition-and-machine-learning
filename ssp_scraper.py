@@ -1,168 +1,253 @@
 """
 SSP-SP Criminal Statistics Scraper
 ====================================
-Scrapes monthly criminal data from https://www.ssp.sp.gov.br/estatistica/dados-mensais
-for years 2009-2018, all regions and their cities, storing results in DuckDB.
+Source : https://www.ssp.sp.gov.br/estatistica/dados-mensais
+Output : crime-<year>.parquet  (one file per year)
 
-Speed strategy
---------------
-The bottleneck is browser interaction (selecting dropdowns + waiting for Angular
-to re-render). We parallelise at the YEAR level: each year gets its own Chrome
-instance running in a separate thread via ThreadPoolExecutor. All threads write
-to the same DuckDB file through a shared threading.Lock so writes don't collide.
+Output schema — one row per (city × month):
+    year | region | city | cod_ibge | month
+    | <CRIME_TYPE_1> | <CRIME_TYPE_2> | ...  (one column per crime type)
 
-Set MAX_WORKERS to the number of parallel browsers you want. A good starting
-point is 3-5; beyond that the SSP server may start rate-limiting you.
+The "Total" column from the website is dropped — compute totals with
+    df.filter(like='CRIME_').sum(axis=1)
+or sum across months with
+    df.groupby(['year','city','cod_ibge'])[crime_cols].sum()
 
-Dependencies:
-    pip install selenium webdriver-manager duckdb pandas
+City-name matching
+------------------
+SSP city names are normalised with the same pipeline applied to the IBGE
+lookup so that accents, hyphens, apostrophes and known typos never cause a
+failed join. The goal is exactly 645 distinct cod_ibge values with no NULLs.
+
+Two correction buckets are used:
+  _EXACT_CORRECTIONS  — full-name match only. Safe for names that are
+                        substrings of other cities (e.g. "Embu" inside
+                        "Embu das Artes" and "Embu-Guaçu").
+  _SUBSTR_CORRECTIONS — str.replace (substring). Only used when the pattern
+                        is guaranteed not to appear inside any other city name.
+
+Years already saved as parquet are skipped automatically on restart.
+
+Dependencies
+------------
+    pip install selenium webdriver-manager pandas pyarrow
 """
 
+from __future__ import annotations
+
+import logging
+import re
 import time
-import threading
 import unicodedata
-import duckdb
+from dataclasses import dataclass
+from pathlib import Path
+
 import pandas as pd
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import Select, WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select, WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
 # ---------------------------------------------------------------------------
 # CONFIGURATION
 # ---------------------------------------------------------------------------
 URL            = "https://www.ssp.sp.gov.br/estatistica/dados-mensais"
-YEARS          = list(range(2009, 2019))   # 2009 to 2018 inclusive
-DB_PATH        = "ssp_criminal.duckdb"
-TABLE_NAME     = "criminal_stats"
-IBGE_CSV_PATH  = "codigos_municipios_regioes.csv"
-WAIT_TIMEOUT   = 15                        # seconds to wait for each element
-MAX_WORKERS    = 4                         # parallel Chrome instances (one per year)
+YEARS          = list(range(2009, 2019))        # 2009–2018 inclusive
+OUTPUT_DIR     = Path(".")                       # where parquet files land
+IBGE_CSV_PATH  = Path("codigos_municipios_regioes.csv")
+WAIT_TIMEOUT   = 15                              # seconds per Selenium wait
 
-# Shared state for parallel workers
-_db_lock         = threading.Lock()        # serialises all DuckDB writes
-_unmatched_lock  = threading.Lock()
-_unmatched_cities: set = set()
+MONTH_NAMES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
+               "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+
+# ---------------------------------------------------------------------------
+# CITY NAME CORRECTIONS  —  SSP site spelling -> IBGE official spelling
+# ---------------------------------------------------------------------------
+# _EXACT_CORRECTIONS: checked against the full city name (strip + dict lookup).
+# Use this for any name that is a substring of another SP city — avoids the
+# str.replace bug where "Embu" -> "Embu das Artes" would also corrupt
+# "Embu das Artes" -> "Embu das Artes das Artes" and
+# "Embu-Guaçu"     -> "Embu das Artes-Guaçu".
+_EXACT_CORRECTIONS: dict[str, str] = {
+    "Embu":                  "Embu das Artes",   # renamed 2011; SSP kept old name
+    "Santa Rosa do Viterbo": "Santa Rosa de Viterbo",  # SSP uses 'do', IBGE uses 'de'
+    "Brodosqui":             "Brodowski",         # old spelling, renamed 1944
+    "Moji das Cruzes":       "Mogi das Cruzes",   # archaic spelling
+    "Florínia":              "Florínea",           # SSP typo
+}
+
+# _SUBSTR_CORRECTIONS: applied as str.replace. Only safe when the pattern
+# cannot appear as a substring of any other SP city name.
+_SUBSTR_CORRECTIONS: list[tuple[str, str]] = [
+    ("São Luís do", "São Luiz do"),   # unique prefix in SP — safe as substring
+]
+
+# ---------------------------------------------------------------------------
+# LOGGING
+# ---------------------------------------------------------------------------
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s  %(levelname)-8s  %(message)s",
+    datefmt="%H:%M:%S",
+)
+log = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
-# HELPER -- normalise strings for fuzzy city-name matching
+# NORMALISATION HELPERS
 # ---------------------------------------------------------------------------
+def _apply_corrections(text: str) -> str:
+    """
+    Apply SSP->IBGE corrections before accent-stripping.
+    Exact corrections are checked first (full-string match).
+    Substring corrections are applied only if no exact match was found.
+    """
+    stripped = text.strip()
+    if stripped in _EXACT_CORRECTIONS:
+        return _EXACT_CORRECTIONS[stripped]
+    for wrong, right in _SUBSTR_CORRECTIONS:
+        text = text.replace(wrong, right)
+    return text
+
+
 def normalize(text: str) -> str:
     """
-    Strips accents, uppercases and collapses whitespace so that
-    'Sao Paulo', 'SAO PAULO' and 'Sao Paulo' all map to 'SAO PAULO'.
+    Canonical key for matching city names across SSP and IBGE:
+      1. Exact correction (full-name dict lookup)
+      2. Substring corrections (safe prefixes only)
+      3. Strip accents via NFKD
+      4. Remove hyphens and apostrophes
+      5. Uppercase + collapse whitespace
     """
     if not isinstance(text, str):
         return ""
-    nfkd = unicodedata.normalize("NFKD", text)
-    ascii_str = nfkd.encode("ascii", "ignore").decode("ascii")
-    return " ".join(ascii_str.upper().split())
+    text  = _apply_corrections(text)
+    nfkd  = unicodedata.normalize("NFKD", text)
+    ascii_ = nfkd.encode("ascii", "ignore").decode()
+    ascii_ = ascii_.replace("-", " ").replace("'", " ")
+    return " ".join(ascii_.upper().split())
 
 
-# ---------------------------------------------------------------------------
-# STEP 1 -- Load IBGE lookup from CSV
-# ---------------------------------------------------------------------------
-def load_ibge_lookup(csv_path: str) -> dict:
+def crime_type_to_col(raw: str) -> str:
     """
-    Returns {normalised_city_name: cod_ibge, ...}.
-    Rows with very short cod_ibge (state-level rows) are dropped.
+    Convert a raw crime-type label into a clean, stable column name.
+    Trailing footnote markers are stripped:
+        'HOMICÍDIO DOLOSO (2)'        -> 'HOMICIDIO_DOLOSO'
+        'TOTAL DE ROUBO - OUTROS (1)' -> 'TOTAL_DE_ROUBO_OUTROS'
+        'FURTO - OUTROS'              -> 'FURTO_OUTROS'
+    """
+    cleaned = re.sub(r"\s*\(\d+\)\s*$", "", raw.strip())
+    nfkd    = unicodedata.normalize("NFKD", cleaned)
+    ascii_  = nfkd.encode("ascii", "ignore").decode()
+    col     = re.sub(r"[^A-Z0-9]+", "_", ascii_.upper())
+    return col.strip("_")
+
+
+# ---------------------------------------------------------------------------
+# IBGE LOOKUP
+# ---------------------------------------------------------------------------
+def build_ibge_lookup(csv_path: Path) -> dict[str, int]:
+    """
+    Returns {normalize(city_name): cod_ibge} for all 645 SP municipalities.
+    Rows without a 7-digit cod_ibge and the placeholder row are skipped.
     """
     df = pd.read_csv(csv_path, encoding="latin1", sep=None, engine="python")
     df = df[["cod_ibge", "municipio"]].dropna()
-    df = df[df["cod_ibge"].astype(str).str.len() > 4]
-    lookup = {
-        normalize(row["municipio"]): int(row["cod_ibge"])
-        for _, row in df.iterrows()
-    }
-    print(f"[init] IBGE lookup loaded: {len(lookup)} cities.")
+    df = df[df["cod_ibge"].astype(str).str.len() == 7]
+    df = df[~df["municipio"].str.startswith("Sem especifica")]
+
+    lookup: dict[str, int] = {}
+    for _, row in df.iterrows():
+        key = normalize(row["municipio"])
+        lookup[key] = int(row["cod_ibge"])
+
+    log.info("[ibge] Lookup built: %d cities.", len(lookup))
     return lookup
 
 
-def get_cod_ibge(city_name: str, lookup: dict):
-    return lookup.get(normalize(city_name))
+# ---------------------------------------------------------------------------
+# RAW SCRAPED DATA (before pivot)
+# ---------------------------------------------------------------------------
+@dataclass
+class RawRow:
+    """One crime-type × month observation for a single city."""
+    year:       int
+    region:     str
+    city:       str
+    cod_ibge:   int | None
+    month:      int         # 1–12
+    crime_col:  str         # sanitised column name
+    value:      int | None
 
 
 # ---------------------------------------------------------------------------
-# STEP 2 -- Create a headless Chrome driver
+# BROWSER SETUP
 # ---------------------------------------------------------------------------
 def create_driver() -> webdriver.Chrome:
-    """
-    Each worker thread calls this to get its own isolated Chrome instance.
-    """
-    options = Options()
-    options.add_argument("--headless")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--window-size=1920,1080")
-    service = Service(ChromeDriverManager().install())
-    driver  = webdriver.Chrome(service=service, options=options)
+    opts = Options()
+    opts.add_argument("--headless")
+    opts.add_argument("--no-sandbox")
+    opts.add_argument("--disable-dev-shm-usage")
+    opts.add_argument("--window-size=1920,1080")
+    svc    = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=svc, options=opts)
     driver.get(URL)
     return driver
 
 
 # ---------------------------------------------------------------------------
-# STEP 3 -- Select the "Criminal" radio button
+# PAGE INTERACTIONS
 # ---------------------------------------------------------------------------
 def select_criminal_radio(driver: webdriver.Chrome) -> None:
     wait = WebDriverWait(driver, WAIT_TIMEOUT)
     wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "input[type='radio']")))
     for label in driver.find_elements(By.CSS_SELECTOR, "label.radio-inline"):
         if "Criminal" in label.text and "Produtividade" not in label.text:
-            driver.execute_script("arguments[0].click();", label.find_element(By.TAG_NAME, "input"))
+            driver.execute_script(
+                "arguments[0].click();",
+                label.find_element(By.TAG_NAME, "input"),
+            )
             return
-    raise RuntimeError("Could not find the 'Criminal' radio button.")
+    raise RuntimeError("'Criminal' radio button not found.")
 
 
-# ---------------------------------------------------------------------------
-# STEP 4 -- Select a year
-# ---------------------------------------------------------------------------
 def select_year(driver: webdriver.Chrome, year: int) -> None:
     wait = WebDriverWait(driver, WAIT_TIMEOUT)
-    el = wait.until(EC.presence_of_element_located(
+    el   = wait.until(EC.presence_of_element_located(
         (By.CSS_SELECTOR, "select[formcontrolname='mensalAno']")
     ))
     Select(el).select_by_value(str(year))
     time.sleep(0.5)
 
 
-# ---------------------------------------------------------------------------
-# STEP 5 -- Get all regions
-# ---------------------------------------------------------------------------
-def get_regions(driver: webdriver.Chrome) -> list:
+def get_regions(driver: webdriver.Chrome) -> list[dict]:
     wait = WebDriverWait(driver, WAIT_TIMEOUT)
-    el = wait.until(EC.presence_of_element_located(
+    el   = wait.until(EC.presence_of_element_located(
         (By.CSS_SELECTOR, "select[formcontrolname='mensalRegiao']")
     ))
     return [
         {"value": opt.get_attribute("value"), "name": opt.text.strip()}
         for opt in Select(el).options
-        if opt.get_attribute("value") != "0"
+        if opt.get_attribute("value") not in ("0", "")
     ]
 
 
-# ---------------------------------------------------------------------------
-# STEP 6 -- Select a region
-# ---------------------------------------------------------------------------
-def select_region(driver: webdriver.Chrome, region_value: str, region_name: str) -> None:
+def select_region(driver: webdriver.Chrome, region_value: str) -> None:
     wait = WebDriverWait(driver, WAIT_TIMEOUT)
-    el = wait.until(EC.presence_of_element_located(
+    el   = wait.until(EC.presence_of_element_located(
         (By.CSS_SELECTOR, "select[formcontrolname='mensalRegiao']")
     ))
     Select(el).select_by_value(region_value)
     time.sleep(1)
 
 
-# ---------------------------------------------------------------------------
-# STEP 7 -- Get all cities for the current region
-# ---------------------------------------------------------------------------
-def get_cities(driver: webdriver.Chrome) -> list:
+def get_cities(driver: webdriver.Chrome) -> list[dict]:
     wait = WebDriverWait(driver, WAIT_TIMEOUT)
-    el = wait.until(EC.presence_of_element_located(
+    el   = wait.until(EC.presence_of_element_located(
         (By.CSS_SELECTOR, "select[formcontrolname='mensalMunicipio']")
     ))
     return [
@@ -172,12 +257,9 @@ def get_cities(driver: webdriver.Chrome) -> list:
     ]
 
 
-# ---------------------------------------------------------------------------
-# STEP 8 -- Select a city
-# ---------------------------------------------------------------------------
-def select_city(driver: webdriver.Chrome, city_value: str, city_name: str) -> None:
+def select_city(driver: webdriver.Chrome, city_value: str) -> None:
     wait = WebDriverWait(driver, WAIT_TIMEOUT)
-    el = wait.until(EC.presence_of_element_located(
+    el   = wait.until(EC.presence_of_element_located(
         (By.CSS_SELECTOR, "select[formcontrolname='mensalMunicipio']")
     ))
     Select(el).select_by_value(city_value)
@@ -185,192 +267,280 @@ def select_city(driver: webdriver.Chrome, city_value: str, city_name: str) -> No
 
 
 # ---------------------------------------------------------------------------
-# STEP 9 -- Scrape the accordion table (Total column only)
+# TABLE PARSING
 # ---------------------------------------------------------------------------
+def parse_int(raw: str) -> int | None:
+    """'13.998' -> 13998 ;  empty / dash -> None."""
+    cleaned = raw.strip().replace(".", "").replace(",", "").replace("-", "")
+    return int(cleaned) if cleaned.isdigit() else None
+
+
+def _snapshot_tables(driver: webdriver.Chrome) -> list[dict]:
+    """
+    Read all accordion tables in a single JS call — no Selenium element
+    references survive, so StaleElementReferenceException cannot occur.
+    """
+    return driver.execute_script("""
+        const tables = document.querySelectorAll('.accordion-body table');
+        return Array.from(tables).map(table => {
+            const headers = Array.from(
+                table.querySelectorAll('thead th')
+            ).map(th => th.innerText.trim());
+
+            const rows = Array.from(
+                table.querySelectorAll('tbody tr')
+            ).map(tr => {
+                const label = tr.querySelector('th')
+                    ? tr.querySelector('th').innerText.trim()
+                    : null;
+                const cells = Array.from(
+                    tr.querySelectorAll('td')
+                ).map(td => td.innerText.trim());
+                return {label, cells};
+            }).filter(r => r.label !== null);
+
+            return {headers, rows};
+        });
+    """)
+
+
 def scrape_table(
-    driver:   webdriver.Chrome,
-    year:     int,
-    region:   str,
-    city:     str,
-    cod_ibge,
-) -> list:
+    driver:      webdriver.Chrome,
+    year:        int,
+    region_name: str,
+    city_name:   str,
+    cod_ibge:    int | None,
+    max_retries: int = 3,
+) -> list[RawRow]:
+    """
+    Snapshot every accordion table into plain strings via a single JS call,
+    then parse locally. Retries up to max_retries times for slow Angular renders.
+    """
     wait = WebDriverWait(driver, WAIT_TIMEOUT)
     try:
-        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".accordion-body table")))
-    except Exception:
-        print(f"  [year={year}] No table for {city}. Skipping.")
+        wait.until(EC.presence_of_element_located(
+            (By.CSS_SELECTOR, ".accordion-body table")
+        ))
+    except TimeoutException:
+        log.warning(
+            "  No table for '%s / %s' (year=%d) — skipping.",
+            region_name, city_name, year,
+        )
         return []
 
-    rows_data = []
-    for table in driver.find_elements(By.CSS_SELECTOR, ".accordion-body table"):
-        headers = [th.text.strip() for th in table.find_elements(By.CSS_SELECTOR, "thead th")]
-        if "Total" not in headers:
-            continue
-        total_idx = headers.index("Total")
-
-        for row in table.find_elements(By.CSS_SELECTOR, "tbody tr"):
-            th_cells = row.find_elements(By.TAG_NAME, "th")
-            td_cells = row.find_elements(By.TAG_NAME, "td")
-            if not th_cells:
-                continue
-            crime_type   = th_cells[0].text.strip()
-            td_total_idx = total_idx - 1
-            if td_total_idx < 0 or td_total_idx >= len(td_cells):
-                continue
-            raw = td_cells[td_total_idx].text.strip().replace(".", "").replace(",", "")
-            try:
-                total_value = int(raw)
-            except ValueError:
-                total_value = None
-            rows_data.append({
-                "year":       year,
-                "region":     region,
-                "city":       city,
-                "cod_ibge":   cod_ibge,
-                "crime_type": crime_type,
-                "total":      total_value,
-            })
-    return rows_data
-
-
-# ---------------------------------------------------------------------------
-# STEP 10 -- Set up DuckDB (drops and recreates the table on every run)
-# ---------------------------------------------------------------------------
-def setup_database(db_path: str) -> duckdb.DuckDBPyConnection:
-    """
-    Connects to DuckDB, drops the table if it exists, and creates it fresh.
-    Called once in the main thread before workers start.
-    """
-    con = duckdb.connect(db_path)
-    con.execute(f"DROP TABLE IF EXISTS {TABLE_NAME}")
-    con.execute(f"""
-        CREATE TABLE {TABLE_NAME} (
-            year       INTEGER  NOT NULL,
-            region     VARCHAR  NOT NULL,
-            city       VARCHAR  NOT NULL,
-            cod_ibge   INTEGER,
-            crime_type VARCHAR  NOT NULL,
-            total      INTEGER,
-            PRIMARY KEY (year, city, crime_type)
+    snapshots = []
+    for attempt in range(1, max_retries + 1):
+        snapshots = _snapshot_tables(driver)
+        if snapshots:
+            break
+        log.warning(
+            "  Empty snapshot for '%s' (attempt %d/%d) — retrying.",
+            city_name, attempt, max_retries,
         )
-    """)
-    print(f"[init] Table '{TABLE_NAME}' reset and ready in '{db_path}'.")
-    return con
+        time.sleep(1)
+
+    raw_rows: list[RawRow] = []
+
+    for table in snapshots:
+        headers  = table["headers"]
+
+        # headers[0] is 'Natureza' (<th scope="row">), so td index = header index - 1
+        month_td: dict[int, int] = {}
+        for i, h in enumerate(headers):
+            if h in MONTH_NAMES:
+                month_td[MONTH_NAMES.index(h) + 1] = i - 1  # Jan=1 … Dez=12
+
+        if not month_td:
+            continue
+
+        for row in table["rows"]:
+            crime_col = crime_type_to_col(row["label"])
+            cells     = row["cells"]
+
+            for month_num, td_idx in month_td.items():
+                value = parse_int(cells[td_idx]) if 0 <= td_idx < len(cells) else None
+
+                raw_rows.append(RawRow(
+                    year=year,
+                    region=region_name,
+                    city=city_name,
+                    cod_ibge=cod_ibge,
+                    month=month_num,
+                    crime_col=crime_col,
+                    value=value,
+                ))
+
+    return raw_rows
 
 
 # ---------------------------------------------------------------------------
-# STEP 11 -- Insert rows into DuckDB (thread-safe via lock)
+# YEAR PIPELINE  —  all regions -> all cities -> scrape -> pivot
 # ---------------------------------------------------------------------------
-def insert_rows(con: duckdb.DuckDBPyConnection, rows: list) -> None:
+def scrape_year(year: int, ibge_lookup: dict[str, int]) -> pd.DataFrame:
     """
-    Inserts a batch of rows.  The caller must hold _db_lock while calling this.
+    Collect every region / city for *year* and return a pivoted DataFrame:
+        year | region | city | cod_ibge | month | <CRIME_COL_1> | ...
     """
-    if not rows:
-        return
-    df = pd.DataFrame(rows, columns=["year", "region", "city", "cod_ibge", "crime_type", "total"])
-    df["cod_ibge"] = df["cod_ibge"].astype("Int64")
-    con.register("_temp_df", df)
-    con.execute(f"""
-        INSERT OR REPLACE INTO {TABLE_NAME}
-        SELECT year, region, city, cod_ibge, crime_type, total
-        FROM _temp_df
-    """)
-    con.unregister("_temp_df")
-
-
-# ---------------------------------------------------------------------------
-# WORKER -- scrapes one full year (runs in its own thread + Chrome instance)
-# ---------------------------------------------------------------------------
-def scrape_year(year: int, ibge_lookup: dict, con: duckdb.DuckDBPyConnection) -> int:
-    """
-    Opens a dedicated Chrome instance, scrapes all regions/cities for the
-    given year, writes rows to DuckDB under the shared lock, then closes
-    the browser.  Returns the total number of rows saved.
-    """
+    log.info("[year=%d] Starting browser.", year)
     driver    = create_driver()
-    total_rows = 0
+    raw_rows: list[RawRow] = []
+    unmatched: set[str]    = set()
 
     try:
         select_criminal_radio(driver)
         select_year(driver, year)
 
         regions = get_regions(driver)
-        print(f"[year={year}] {len(regions)} regions found.")
+        log.info("[year=%d] %d region(s) found.", year, len(regions))
 
-        for region in regions:
-            select_region(driver, region["value"], region["name"])
+        for r_idx, region in enumerate(regions, 1):
+            log.info("[year=%d] [%d/%d] Region: %s",
+                     year, r_idx, len(regions), region["name"])
+            select_region(driver, region["value"])
             cities = get_cities(driver)
 
-            for city in cities:
-                select_city(driver, city["value"], city["name"])
+            for c_idx, city in enumerate(cities, 1):
+                select_city(driver, city["value"])
 
-                cod_ibge = get_cod_ibge(city["name"], ibge_lookup)
+                # normalize() applies _EXACT_CORRECTIONS first (full-name match)
+                # then _SUBSTR_CORRECTIONS — no substring collision possible
+                cod_ibge = ibge_lookup.get(normalize(city["name"]))
                 if cod_ibge is None:
-                    with _unmatched_lock:
-                        _unmatched_cities.add(city["name"])
-                    print(f"  [year={year}] No IBGE match for '{city['name']}'")
+                    unmatched.add(city["name"])
+                    log.warning(
+                        "  [year=%d] No IBGE match for '%s'", year, city["name"]
+                    )
 
-                rows = scrape_table(driver, year, region["name"], city["name"], cod_ibge)
+                rows = scrape_table(
+                    driver, year, region["name"], city["name"], cod_ibge
+                )
+                raw_rows.extend(rows)
 
-                if rows:
-                    with _db_lock:
-                        insert_rows(con, rows)
-                    total_rows += len(rows)
-                    print(f"  [year={year}] {city['name']} -> {len(rows)} rows saved.")
+                log.info(
+                    "  [year=%d] [%d/%d] %-35s -> %d obs",
+                    year, c_idx, len(cities), city["name"], len(rows),
+                )
 
     finally:
         driver.quit()
+        log.info("[year=%d] Browser closed. Raw obs: %d", year, len(raw_rows))
 
-    print(f"[year={year}] Done. {total_rows} rows total.")
-    return total_rows
+    if not raw_rows:
+        return pd.DataFrame()
+
+    if unmatched:
+        log.warning(
+            "[year=%d] %d city/cities with no IBGE match: %s",
+            year, len(unmatched), sorted(unmatched),
+        )
+
+    return _pivot(raw_rows)
+
+
+# ---------------------------------------------------------------------------
+# PIVOT  —  long (crime_col, value) -> wide (one column per crime type)
+# ---------------------------------------------------------------------------
+def _pivot(raw_rows: list[RawRow]) -> pd.DataFrame:
+    """
+    Input:  year, region, city, cod_ibge, month, crime_col, value  (long)
+    Output: year, region, city, cod_ibge, month, <COL_A>, <COL_B>… (wide)
+    One row per (city × month).
+    """
+    df = pd.DataFrame([
+        {
+            "year":      r.year,
+            "region":    r.region,
+            "city":      r.city,
+            "cod_ibge":  r.cod_ibge,
+            "month":     r.month,
+            "crime_col": r.crime_col,
+            "value":     r.value,
+        }
+        for r in raw_rows
+    ])
+
+    pivoted = df.pivot_table(
+        index=["year", "region", "city", "cod_ibge", "month"],
+        columns="crime_col",
+        values="value",
+        aggfunc="first",
+    ).reset_index()
+
+    pivoted.columns.name = None
+    pivoted = pivoted.sort_values(["region", "city", "month"]).reset_index(drop=True)
+
+    pivoted["cod_ibge"] = pivoted["cod_ibge"].astype("Int64")
+
+    crime_cols = [c for c in pivoted.columns
+                  if c not in ("year", "region", "city", "cod_ibge", "month")]
+    for col in crime_cols:
+        pivoted[col] = pd.to_numeric(pivoted[col], errors="coerce").astype("Int64")
+
+    return pivoted
+
+
+# ---------------------------------------------------------------------------
+# PARQUET OUTPUT
+# ---------------------------------------------------------------------------
+def save_parquet(df: pd.DataFrame, year: int, output_dir: Path) -> Path:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    path = output_dir / f"crime-{year}.parquet"
+    df.to_parquet(path, index=False, engine="pyarrow")
+
+    n_cities  = df["city"].nunique()
+    n_ibge    = df["cod_ibge"].nunique()
+    n_missing = df["cod_ibge"].isna().sum()
+    log.info(
+        "Saved -> %s  |  rows=%d  cities=%d  cod_ibge=%d  missing_ibge=%d",
+        path, len(df), n_cities, n_ibge, n_missing,
+    )
+    if n_ibge != 645:
+        log.warning(
+            "  Expected 645 distinct cod_ibge but got %d — check unmatched cities above.",
+            n_ibge,
+        )
+    return path
 
 
 # ---------------------------------------------------------------------------
 # MAIN
 # ---------------------------------------------------------------------------
-def main():
-    ibge_lookup = load_ibge_lookup(IBGE_CSV_PATH)
-    con         = setup_database(DB_PATH)
+def main() -> None:
+    log.info("Years      : %s", YEARS)
+    log.info("Output dir : %s", OUTPUT_DIR.resolve())
 
-    print(f"\n[main] Scraping {len(YEARS)} years with up to {MAX_WORKERS} parallel browsers...\n")
+    ibge_lookup = build_ibge_lookup(IBGE_CSV_PATH)
 
-    grand_total = 0
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = {
-            executor.submit(scrape_year, year, ibge_lookup, con): year
-            for year in YEARS
-        }
-        for future in as_completed(futures):
-            year = futures[future]
-            try:
-                grand_total += future.result()
-            except Exception as exc:
-                print(f"[year={year}] ERROR: {exc}")
+    saved_files: list[Path] = []
 
-    # Summary
-    print(f"\n[main] All years done. Grand total: {grand_total} rows.")
+    for year in YEARS:
+        # Skip years already saved — safe to restart after interruption
+        parquet_path = OUTPUT_DIR / f"crime-{year}.parquet"
+        if parquet_path.exists():
+            log.info("[year=%d] Already exists — skipping. (%s)", year, parquet_path)
+            saved_files.append(parquet_path)
+            continue
 
-    summary = con.execute(f"""
-        SELECT year,
-               COUNT(DISTINCT city)     AS cities,
-               COUNT(DISTINCT cod_ibge) AS cities_with_ibge,
-               COUNT(*)                 AS records
-        FROM   {TABLE_NAME}
-        GROUP  BY year
-        ORDER  BY year
-    """).fetchdf()
-    print("\nRecords per year:")
-    print(summary.to_string(index=False))
+        df = scrape_year(year, ibge_lookup)
 
-    if _unmatched_cities:
-        print(f"\nCities with no IBGE match ({len(_unmatched_cities)}) -- stored with cod_ibge=NULL:")
-        for c in sorted(_unmatched_cities):
-            print(f"  - {c}")
-    else:
-        print("\nAll cities matched to an IBGE code.")
+        if df.empty:
+            log.warning("[year=%d] No data — parquet NOT written.", year)
+            continue
 
-    con.close()
-    print("\n[main] Database connection closed.")
+        path = save_parquet(df, year, OUTPUT_DIR)
+        saved_files.append(path)
+
+        summary = (
+            df.groupby("region")["city"]
+            .nunique()
+            .reset_index()
+            .rename(columns={"city": "cities"})
+        )
+        log.info("[year=%d] Cities per region:\n%s", year, summary.to_string(index=False))
+
+    log.info("\nDone. %d parquet file(s) written:", len(saved_files))
+    for p in saved_files:
+        log.info("  %s", p)
 
 
 if __name__ == "__main__":
