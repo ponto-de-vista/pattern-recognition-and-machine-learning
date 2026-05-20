@@ -7,6 +7,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
+import unicodedata
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
@@ -143,13 +144,13 @@ def convert_csv_to_parquet(domain, encode='utf-8'):
             else:
                 print(f"\nFile {csv_file} not found. Skipping...")
 
-def convert_pib_csv_to_parquet_with_ibge(domain='pib', encode='iso-8859_9-1999'):
+def convert_pib_csv_to_parquet_with_ibge(domain='pib', encode='utf-8'):
     
     print("Connecting to in-memory database")
 
     with duckdb.connect(":memory:") as con:
 
-        for year in range(2009, 2019):
+        for year in [2019]:
             csv_file = f'./{domain}-datasets/{domain}-{year}.csv'
             parquet_file = f'./{domain}-datasets/{domain}-{year}.parquet'
             ibge_file = 'codigos_municipios_regioes.csv'
@@ -178,31 +179,31 @@ def convert_pib_csv_to_parquet_with_ibge(domain='pib', encode='iso-8859_9-1999')
                     pib_data AS (
                         SELECT 
                             {year} AS ano_exercicio,
-                            column00 AS ds_municipio,
-                            column01 AS agropecuaria,
-                            column02 AS industria,
-                            column03 AS servicos,
-                            column04 AS adm_publica,
-                            column05 AS total_excl_adm,
-                            column06 AS impostos,
-                            column07 AS pib_total,
-                            column08 AS pib_per_capita
+                            column0 AS ds_municipio,
+                            TRY_CAST(column1 AS DOUBLE) AS agropecuaria,
+                            TRY_CAST(column2 AS DOUBLE) AS industria,
+                            TRY_CAST(column3 AS DOUBLE) AS servicos,
+                            TRY_CAST(column4 AS DOUBLE) AS adm_publica,
+                            TRY_CAST(column5 AS DOUBLE) AS total_excl_adm,
+                            TRY_CAST(column6 AS DOUBLE) AS impostos,
+                            TRY_CAST(column7 AS DOUBLE) AS pib_total,
+                            TRY_CAST(column8 AS DOUBLE) AS pib_per_capita
                         FROM read_csv(
                             '{csv_file}',
-                            delim = ';',
-                            decimal_separator = ',',
+                            delim = ',',             
+                            decimal_separator = '.', 
                             skip = 10,
                             header = false,
                             encoding = '{encode}',
                             ignore_errors = true
                         )
-                        -- NOVO WHERE: Ignora nulos, vazios e as linhas de rodapé
-                        WHERE column00 IS NOT NULL 
-                          AND column00 != ''
-                          AND column00 NOT LIKE 'Fonte:%'
-                          AND column00 NOT LIKE '(1)%'
-                          AND column00 NOT LIKE '(2)%'
-                          AND column00 NOT LIKE 'Nota:%'
+                        WHERE column0 IS NOT NULL 
+                        AND column0 != ''
+                        AND column0 NOT LIKE 'Fonte:%'
+                        AND column0 NOT LIKE '(1)%'
+                        AND column0 NOT LIKE '(2)%'
+                        AND column0 NOT LIKE 'Nota:%'
+                        AND column0 != 'ESTADO DE SÃO PAULO'
                     )
                     SELECT 
                         ibge.cod_ibge,
@@ -212,10 +213,12 @@ def convert_pib_csv_to_parquet_with_ibge(domain='pib', encode='iso-8859_9-1999')
                         ON UPPER(TRIM(regexp_replace(strip_accents(
                             REPLACE(
                                 REPLACE(
-                                    REPLACE(p.ds_municipio, '-', ' '), -- 1. Troca hífen por espaço
-                                'Florínia', 'Florínea'),               -- 2. Corrige o I para E
-                            'São Luís do', 'São Luiz do')              -- 3. Corrige o S para Z
-                        ), '\s+', ' ', 'g'))) = ibge.municipio_norm
+                                    REPLACE(
+                                        REPLACE(p.ds_municipio, '-', ' '), 
+                                    'Florínia', 'Florínea'),               
+                                'São Luís do', 'São Luiz do'),             
+                            '''', '')                                      
+                        ), '\s+', ' ', 'g'))) = REPLACE(ibge.municipio_norm, '''', '')
                 """
 
                 con.sql(query).write_parquet(parquet_file)
@@ -460,7 +463,7 @@ def filtrar_parquets_estado():
 
 def consolidar_decada_por_dominio():
 
-    dominios = ['despesas', 'pib']
+    dominios = ['pib', 'crime']
     
     with duckdb.connect(":memory:") as con:
         
@@ -470,7 +473,7 @@ def consolidar_decada_por_dominio():
         
         for dominio in dominios:
             pasta = f'./{dominio}-datasets/'
-            arquivo_final = f'./{dominio}-2009-2018.parquet'
+            arquivo_final = f'./{dominio}-2010-2019.parquet'
             
             print(f"🚀 Iniciando a consolidação da década para o domínio: {dominio.upper()}...")
             
@@ -543,9 +546,7 @@ def describe_dataset_columns():
     con.execute("PRAGMA memory_limit='8GB'")
 
     files = [
-        './despesas-datasets/despesas-2009-2018-pivot.parquet', 
-        './pib-datasets/pib-2009-2018.parquet', 
-        './crime-datasets/crime-2009-2018.parquet'
+        './gdvDespesasExcel-datasets/gdvDespesasExcel-2010_com_ibge.parquet', 
     ]
 
     for f in files:
@@ -562,18 +563,26 @@ def cardinalidade_despesas():
 
     print("Calculando a cardinalidade REAL (Limpa) das colunas categóricas...\n")
 
+    # Utilizando aspas duplas para mapear exatamente os nomes das colunas do seu Parquet
     query = """
         SELECT 
-            COUNT(DISTINCT UPPER(TRIM(ds_funcao_governo))) AS qtd_funcoes_limpas,
-            COUNT(DISTINCT UPPER(TRIM(ds_subfuncao_governo))) AS qtd_subfuncoes_limpas,
-            COUNT(DISTINCT UPPER(TRIM(ds_programa))) AS qtd_programas_limpos,
-            COUNT(DISTINCT UPPER(TRIM(ds_acao))) AS qtd_acoes_limpas,
-            COUNT(DISTINCT UPPER(TRIM(ds_fonte_recurso))) AS qtd_fontes_limpas,
-            COUNT(DISTINCT UPPER(TRIM(ds_elemento))) AS qtd_elementos_limpos
-        FROM './despesas-datasets/despesas-2009-2018.parquet'
+            COUNT(DISTINCT UPPER(TRIM("Órgão"))) AS qtd_orgaos_limpos,
+            COUNT(DISTINCT UPPER(TRIM("Função"))) AS qtd_funcoes_limpas,
+            COUNT(DISTINCT UPPER(TRIM("Sub Função"))) AS qtd_subfuncoes_limpas,
+            COUNT(DISTINCT UPPER(TRIM("Programa"))) AS qtd_programas_limpos,
+            COUNT(DISTINCT UPPER(TRIM("Ação"))) AS qtd_acoes_limpas,
+            COUNT(DISTINCT UPPER(TRIM("Funcional Programática"))) AS qtd_func_programatica_limpas,
+            COUNT(DISTINCT UPPER(TRIM("Município"))) AS qtd_municipios_limpos,
+            COUNT(DISTINCT UPPER(TRIM("Despesa"))) AS qtd_despesas_limpas,
+            COUNT(DISTINCT UPPER(TRIM("drs"))) AS qtd_drs_limpos,
+            COUNT(DISTINCT UPPER(TRIM("r_saude"))) AS qtd_r_saude_limpos
+        FROM './gdvDespesasExcel-datasets/gdvDespesasExcel-2010_com_ibge.parquet'
     """
 
+    # Executa a query e converte o resultado para um DataFrame do Pandas
     resultado = con.execute(query).df()
+    
+    # Imprime transposto (.T) para facilitar a visualização em formato de lista
     print(resultado.T)
 
 
@@ -586,33 +595,61 @@ def extrair_dicionario_dados():
     def pegar_lista(coluna, filtro_extra=""):
         query = f"""
             SELECT DISTINCT UPPER(TRIM({coluna})) AS categoria_limpa
-            FROM './despesas-datasets/despesas-2009-2018.parquet' 
+            FROM './gdvDespesasExcel-datasets/gdvDespesasExcel-2010_com_ibge.parquet' 
             WHERE {coluna} IS NOT NULL {filtro_extra}
             ORDER BY 1
         """
         return con.execute(query).df()['categoria_limpa'].tolist()
 
-    # 1. Funções globais
-    funcoes = pegar_lista("ds_funcao_governo")
-    
-    # 2. Fontes globais
-    fontes = pegar_lista("ds_fonte_recurso")
+    # 1. Funções e Órgãos (Globais, sem filtro)
+    funcoes = pegar_lista('"Função"')
+    orgaos = pegar_lista('"Órgão"')
 
-    # 3. Subfunções (Filtro 1: Apenas Segurança Pública)
-    trava_seguranca = "AND (ds_funcao_governo ILIKE '%segurança%' OR ds_funcao_governo ILIKE '%seguranca%')"
-    subfuncoes_seguranca = pegar_lista("ds_subfuncao_governo", trava_seguranca)
+    # --- INÍCIO DOS DADOS FILTRADOS POR SEGURANÇA PÚBLICA ---
+    trava_seguranca = 'AND ("Função" ILIKE \'%segurança%\' OR "Função" ILIKE \'%seguranca%\')'
+    
+    subfuncoes_seguranca = pegar_lista('"Sub Função"', trava_seguranca)
+    programas_seguranca = pegar_lista('"Programa"', trava_seguranca)
+    acoes_seguranca = pegar_lista('"Ação"', trava_seguranca)
+    func_programatica_seguranca = pegar_lista('"Funcional Programática"', trava_seguranca)
+    municipios_seguranca = pegar_lista('"Município"', trava_seguranca)
+    despesas_seguranca = pegar_lista('"Despesa"', trava_seguranca)
+    drs_seguranca = pegar_lista('"drs"', trava_seguranca)
+    r_saude_seguranca = pegar_lista('"r_saude"', trava_seguranca)
+
 
     # --- ÁREA DE IMPRESSÃO ---
     print(f"🔹 FUNÇÕES REAIS ({len(funcoes)}):")
     print(funcoes, "\n")
 
-    print(f"🔹 FONTES DE RECURSO REAIS ({len(fontes)}):")
-    print(fontes, "\n")
+    print(f"🔹 ÓRGÃOS REAIS ({len(orgaos)}):")
+    print(orgaos, "\n")
 
-    print(f"🔹 SUBFUNÇÕES REAIS (Filtradas para Segurança Pública) ({len(subfuncoes_seguranca)}):")
+    print(f"🔹 SUBFUNÇÕES (Segurança Pública) ({len(subfuncoes_seguranca)}):")
     for sf in subfuncoes_seguranca:
         print(f"  - {sf}")
     print("\n")
+
+    print(f"🔹 PROGRAMAS (Segurança Pública) ({len(programas_seguranca)}):")
+    print(programas_seguranca, "\n")
+
+    print(f"🔹 AÇÕES (Segurança Pública) ({len(acoes_seguranca)}):")
+    print(acoes_seguranca, "\n")
+
+    print(f"🔹 FUNCIONAL PROGRAMÁTICA (Segurança Pública) ({len(func_programatica_seguranca)}):")
+    print(func_programatica_seguranca, "\n")
+    
+    print(f"🔹 DESPESAS (Segurança Pública) ({len(despesas_seguranca)}):")
+    print(despesas_seguranca, "\n")
+
+    print(f"🔹 MUNICÍPIOS (Segurança Pública) ({len(municipios_seguranca)}):")
+    print(municipios_seguranca, "\n")
+
+    print(f"🔹 DRS - DEPARTAMENTOS REGIONAIS DE SAÚDE (Segurança Pública) ({len(drs_seguranca)}):")
+    print(drs_seguranca, "\n")
+
+    print(f"🔹 REDES DE SAÚDE (Segurança Pública) ({len(r_saude_seguranca)}):")
+    print(r_saude_seguranca, "\n")
 
 
 def auditar_seguranca_estrategica():
@@ -946,9 +983,219 @@ def gerar_dataset_mestre():
     print(f"Finalizada com {total_linhas:,} linhas!")
     print(f"Arquivo pronto em: {arquivo_destino}")
 
+def convert_gdv_to_parquet_with_ibge(domain='gdvDespesasExcel'):
+    print("Iniciando processo de conversão e enriquecimento com IBGE...")
+    
+    # 1. Configurando o DuckDB
+    con = duckdb.connect()
+    con.execute("PRAGMA memory_limit='8GB'")
+    
+    # 2. Carrega a base do IBGE e define as correções UMA VEZ (fora do loop para ser rápido)
+    print("Carregando base de municípios do IBGE...")
+    df_ibge = pd.read_csv('codigos_municipios_regioes.csv', sep=';', encoding='iso-8859-1')
+    
+    correcoes_municipios = {
+        'ARCO IRIS': 'ARCO-IRIS',
+        'BIRITIBA-MIRIM': 'BIRITIBA MIRIM',
+        'BRODOSQUI': 'BRODOWSKI',
+        'EMBU': 'EMBU DAS ARTES',
+        'EMBU GUACU': 'EMBU-GUACU',
+        'IPAUCU': 'IPAUSSU',
+        'MOGI-GUACU': 'MOGI GUACU',
+        'MOGI-MIRIM': 'MOGI MIRIM',
+        'NOVA LUSITANIA': 'NOVA LUZITANIA',
+        'PALMEIRA D_OESTE': "PALMEIRA D'OESTE",
+        'SALMORAO': 'SALMOURAO',
+        'SEVERINEA': 'SEVERINIA',
+        'SUD MENUCCI': 'SUD MENNUCCI',
+        'SUZANOPOLIS': 'SUZANAPOLIS'
+    }
+
+    # 3. Loop pelos anos
+    for year in range(2009, 2021):
+        csv_file = f'./{domain}-datasets/{domain}-{year}.csv'
+        parquet_file = f'./{domain}-datasets/{domain}-{year}_com_ibge.parquet'
+
+        if os.path.exists(parquet_file):
+            print(f"\n--- {parquet_file} já existe. Pulando conversão do ano {year}... ---")
+            continue
+
+        if os.path.exists(csv_file):
+            print(f"\nCarregando e processando {csv_file}...")
+            start_time = time.time()
+
+            # Lendo o CSV com Pandas para tipar números brasileiros corretamente
+            df = pd.read_csv(
+                csv_file, 
+                encoding='iso-8859-1', 
+                sep=',', 
+                low_memory=False,
+                decimal=',',
+                thousands='.',
+                usecols=lambda c: not c.startswith('Unnamed:')
+            )
+            
+            # Limpeza da coluna Município
+            if 'Município' in df.columns:
+                # Usa .str[-1] para pegar sempre a última parte do split, com ou sem o prefixo
+                df['Município'] = df['Município'].astype(str).str.split(' - ', n=1).str[-1].str.strip()
+                df['Município'] = df['Município'].replace(correcoes_municipios)
+            
+            # Cruzamento e Exportação direta via DuckDB
+            query_exportacao = f"""
+                COPY (
+                    SELECT 
+                        despesas.*,
+                        ibge.cod_ibge,
+                        ibge.drs,
+                        ibge.r_saude
+                    FROM df AS despesas
+                    INNER JOIN df_ibge AS ibge 
+                        ON UPPER(strip_accents(TRIM(despesas.Município))) = UPPER(strip_accents(TRIM(ibge.municipio)))
+                ) TO '{parquet_file}' (FORMAT PARQUET);
+            """
+            
+            con.execute(query_exportacao)
+            
+            # Cálculos de performance e log de sucesso
+            elapsed_time = time.time() - start_time
+            parquet_size_mb = os.path.getsize(parquet_file) / (1024 * 1024)
+            
+            print(f"SUCESSO: Salvo {parquet_size_mb:.2f} MB em {parquet_file}")
+            print(f"Tempo levado: {elapsed_time:.2f} segundos")
+
+        else:
+            print(f"\nArquivo {csv_file} não encontrado. Pulando...")
+
+def gerar_master_parquet_via_sql():
+    start_time = time.time()
+    print("Iniciando processamento analítico nativo no DuckDB (SQL)...")
+    
+    con = duckdb.connect()
+    con.execute("PRAGMA memory_limit='8GB'")
+    
+    arquivo_destino = './gdvDespesasExcel-datasets/master_despesas_municipios_2010_2019.parquet'
+    os.makedirs(os.path.dirname(arquivo_destino), exist_ok=True)
+
+    # Query única que lê todos os arquivos, categoriza, faz o pivot e exporta
+    query = f"""
+        COPY (
+            WITH dados_brutos AS (
+                SELECT 
+                    -- 1. Captura o Ano diretamente do nome de cada arquivo carregado
+                    CAST(regexp_extract(filename, 'gdvDespesasExcel-(\d+)', 1) AS INTEGER) AS Ano,
+                    cod_ibge,
+                    "Município",
+                    (COALESCE("Pago", 0) + COALESCE("Pago Restos", 0)) AS pago_total,
+                    
+                    -- 2. Bucket A: Setores (Funções e Órgãos)
+                    CASE 
+                        WHEN UPPER("Função") LIKE '%SEGURANCA%' OR UPPER("Função") LIKE '%SEGURANÇA%' OR UPPER("Órgão") LIKE '%SEGURANCA%' THEN 'seguranca'
+                        WHEN UPPER("Função") LIKE '%SAUDE%' OR UPPER("Função") LIKE '%SAÚDE%' THEN 'saude'
+                        WHEN UPPER("Função") LIKE '%EDUCACAO%' OR UPPER("Função") LIKE '%EDUCAÇÃO%' THEN 'educacao'
+                        WHEN UPPER("Função") IN ('01 - LEGISLATIVA', '02 - JUDICIARIA', '03 - ESSENCIAL A JUSTICA', '04 - ADMINISTRACAO') THEN 'maquina'
+                        ELSE 'outros'
+                    END AS b_setor,
+                    
+                    -- 3. Bucket B: Subfunções de Segurança Pública
+                    CASE 
+                        WHEN (UPPER("Função") LIKE '%SEGURANCA%' OR UPPER("Função") LIKE '%SEGURANÇA%' OR UPPER("Órgão") LIKE '%SEGURANCA%') THEN
+                            CASE 
+                                WHEN "Sub Função" LIKE '%181%' THEN 'policiamento'
+                                WHEN "Sub Função" LIKE '%182%' THEN 'defesa_civil'
+                                WHEN "Sub Função" LIKE '%183%' THEN 'inteligencia'
+                                WHEN "Sub Função" LIKE '%122%' THEN 'adm_geral'
+                                ELSE 'outras'
+                            END
+                        ELSE NULL
+                    END AS b_subfuncao,
+                    
+                    -- 4. Bucket C: Ações e Programas de Segurança
+                    CASE 
+                        WHEN (UPPER("Função") LIKE '%SEGURANCA%' OR UPPER("Função") LIKE '%SEGURANÇA%' OR UPPER("Órgão") LIKE '%SEGURANCA%') THEN
+                            CASE 
+                                WHEN REGEXP_MATCHES(UPPER("Ação" || ' ' || "Programa"), 'POLICI|OSTENSIV|PATRULH|FORCA|FORÇA') THEN 'operacional'
+                                WHEN REGEXP_MATCHES(UPPER("Ação" || ' ' || "Programa"), 'INTELIG|INFORMA|TECNOL|SISTEMA|MONITORAM') THEN 'inteligencia'
+                                WHEN REGEXP_MATCHES(UPPER("Ação" || ' ' || "Programa"), 'REFORMA|PREDIO|VIATURA|EQUIPAMENTO|CONSTRUCAO') THEN 'infraestrutura'
+                                ELSE 'adm_suporte'
+                            END
+                        ELSE NULL
+                    END AS b_acao,
+                    
+                    -- 5. Bucket D: Tipo de Despesa (Geral)
+                    CASE 
+                        WHEN REGEXP_MATCHES(UPPER("Despesa"), 'PESSOAL|ENCARGOS|PROVENTOS') THEN 'pessoal'
+                        WHEN REGEXP_MATCHES(UPPER("Despesa"), 'MATERIAL|CONSUMO') THEN 'materiais'
+                        WHEN REGEXP_MATCHES(UPPER("Despesa"), 'SERVICO|SERVIÇO') THEN 'servicos'
+                        WHEN REGEXP_MATCHES(UPPER("Despesa"), 'INVESTIMENTO|OBRAS|EQUIPAMENTO') THEN 'investimentos'
+                        ELSE 'outras'
+                    END AS b_despesa
+                    
+                -- O caractere '*' faz o DuckDB ler TODOS os arquivos Parquet de uma vez só
+                FROM read_parquet('./gdvDespesasExcel-datasets/gdvDespesasExcel-*_com_ibge.parquet', filename=true)
+            )
+            
+            -- Agregação Condicional (Agrupa por município/ano e faz a pivotagem)
+            SELECT 
+                Ano,
+                cod_ibge,
+                "Município" AS city,
+                
+                -- Pivot de Setores
+                SUM(CASE WHEN b_setor = 'seguranca' THEN pago_total ELSE 0 END) AS gasto_setor_seguranca,
+                SUM(CASE WHEN b_setor = 'saude' THEN pago_total ELSE 0 END) AS gasto_setor_saude,
+                SUM(CASE WHEN b_setor = 'educacao' THEN pago_total ELSE 0 END) AS gasto_setor_educacao,
+                SUM(CASE WHEN b_setor = 'maquina' THEN pago_total ELSE 0 END) AS gasto_setor_adm_jud_leg,
+                SUM(CASE WHEN b_setor = 'outros' THEN pago_total ELSE 0 END) AS gasto_setor_outros,
+                
+                -- Pivot de Despesas
+                SUM(CASE WHEN b_despesa = 'pessoal' THEN pago_total ELSE 0 END) AS desp_pessoal_encargos,
+                SUM(CASE WHEN b_despesa = 'materiais' THEN pago_total ELSE 0 END) AS desp_materiais,
+                SUM(CASE WHEN b_despesa = 'servicos' THEN pago_total ELSE 0 END) AS desp_servicos_terceiros,
+                SUM(CASE WHEN b_despesa = 'investimentos' THEN pago_total ELSE 0 END) AS desp_investimentos_obras,
+                SUM(CASE WHEN b_despesa = 'outras' THEN pago_total ELSE 0 END) AS desp_outras_despesas,
+                
+                -- Pivot de Subfunções de Segurança
+                SUM(CASE WHEN b_subfuncao = 'policiamento' THEN pago_total ELSE 0 END) AS seg_sub_policiamento,
+                SUM(CASE WHEN b_subfuncao = 'defesa_civil' THEN pago_total ELSE 0 END) AS seg_sub_defesa_civil,
+                SUM(CASE WHEN b_subfuncao = 'inteligencia' THEN pago_total ELSE 0 END) AS seg_sub_inteligencia,
+                SUM(CASE WHEN b_subfuncao = 'adm_geral' THEN pago_total ELSE 0 END) AS seg_sub_adm_geral,
+                SUM(CASE WHEN b_subfuncao = 'outras' THEN pago_total ELSE 0 END) AS seg_sub_outras,
+                
+                -- Pivot de Ações/Programas de Segurança
+                SUM(CASE WHEN b_acao = 'operacional' THEN pago_total ELSE 0 END) AS seg_foco_operacional,
+                SUM(CASE WHEN b_acao = 'inteligencia' THEN pago_total ELSE 0 END) AS seg_foco_inteligencia,
+                SUM(CASE WHEN b_acao = 'infraestrutura' THEN pago_total ELSE 0 END) AS seg_foco_infraestrutura_recursos,
+                SUM(CASE WHEN b_acao = 'adm_suporte' THEN pago_total ELSE 0 END) AS seg_foco_adm_suporte
+                
+            FROM dados_brutos
+            GROUP BY Ano, cod_ibge, "Município"
+            ORDER BY Ano, cod_ibge
+        ) TO '{arquivo_destino}' (FORMAT PARQUET, COMPRESSION 'ZSTD');
+    """
+    
+    con.execute(query)
+    
+    elapsed_time = time.time() - start_time
+    total_linhas = con.execute(f"SELECT count(*) FROM '{arquivo_destino}'").fetchone()[0]
+    
+    print("\n" + "="*50)
+    print("🚀 MASTER PARQUET GERADO TOTALMENTE VIA SQL! 🚀")
+    print("="*50)
+    print(f"Linhas consolidadas: {total_linhas:,}")
+    print(f"Tempo de execução: {elapsed_time:.2f} segundos")
+    print(f"Salvo em: {arquivo_destino}")
+    print("="*50)
 
 if __name__ == "__main__":
 
     describe_dataset_columns()
+    print("------------------------------------", "\n")
     cardinalidade_despesas()
+    print("------------------------------------", "\n")
     extrair_dicionario_dados()
+    print("------------------------------------", "\n")
+    gerar_master_parquet_via_sql()
+
+
+

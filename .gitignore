@@ -8,3 +8,5 @@
 *.duckdb
 .vscode/
 !codigos_municipios_regioes.csv
+/gdvDespesasExcel-datasets/
+/old-despesas-datasets/

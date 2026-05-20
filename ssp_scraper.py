@@ -56,7 +56,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 # CONFIGURATION
 # ---------------------------------------------------------------------------
 URL            = "https://www.ssp.sp.gov.br/estatistica/dados-mensais"
-YEARS          = list(range(2009, 2019))        # 2009–2018 inclusive
+YEARS          = list([2019])        # 2009–2018 inclusive
 OUTPUT_DIR     = Path(".")                       # where parquet files land
 IBGE_CSV_PATH  = Path("codigos_municipios_regioes.csv")
 WAIT_TIMEOUT   = 15                              # seconds per Selenium wait
