@@ -1,5 +1,6 @@
 *.csv
 *.xlsx
+*.parquet
 /pib-datasets/
 /crime-datasets/
 /despesas-datasets/
